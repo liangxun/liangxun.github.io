@@ -7,17 +7,17 @@
   
   <title>hello | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7-">
+  <meta name="description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hello">
 <meta property="og:url" content="http://yoursite.com/2019/05/10/hello/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7-">
+<meta property="og:description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-17T04:01:50.495Z">
+<meta property="og:updated_time" content="2019-05-17T04:12:06.904Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hello">
-<meta name="twitter:description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7-">
+<meta name="twitter:description" content="损失函数注意：损失函数和评价指标(性能度量)不是一回事儿损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在训练集的平均损失。 参考：《统计机器学习》p7">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -86,7 +86,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>注意：损失函数和评价指标(性能度量)不是一回事儿<br>损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在<em>训练集</em>的平均损失。 参考：《统计机器学习》p7-8  </p>
+        <p><script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"><br></script></p>
+<h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>注意：损失函数和评价指标(性能度量)不是一回事儿<br>损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在<em>训练集</em>的平均损失。 参考：《统计机器学习》p7-8  </p>
 <h2 id="分类任务的损失函数"><a href="#分类任务的损失函数" class="headerlink" title="分类任务的损失函数"></a>分类任务的损失函数</h2><h3 id="多分类，分类器的输出为向量"><a href="#多分类，分类器的输出为向量" class="headerlink" title="多分类，分类器的输出为向量"></a>多分类，分类器的输出为向量</h3><p><strong>交叉熵损失函数</strong><br>交叉熵与softmax不是一回事。交叉熵可以得出两个概率分布的距离，其输入为两个概率分布。经过one-hot编码的标签向量可以看做一个概率分布，而softmax是输出恰好可以看做是一个概率分布。所以交叉熵和softmax经常出现在一块，交叉熵作为一种距离度量，是属于损失函数；而softmax属于一种特殊的激活函数。 参考：《深度学习》 3.1  </p>
 <h3 id="二分类，分类器的输出为单个值："><a href="#二分类，分类器的输出为单个值：" class="headerlink" title="二分类，分类器的输出为单个值："></a>二分类，分类器的输出为单个值：</h3><p><strong>0/1损失函数</strong><br>$$<br>loss(z)=\begin{cases}<br>1, &amp; z&lt;0; \<br>0, &amp; otherwise.<br>\end{cases}<br>$$<br>0/1损失函数适用于二分类，$z$表示的是分类器的输出（输出为负值就判定为负类，输出为非负就判定为正类）。因为0/1损失函数非凸、非连续，所以实际中会用下面几种替代损失函数(surrogate loss)来代替0/1损失函数。 参考：《机器学习》p130.</p>
 <p>Hinge损失函数（SVM就是用的Hinge损失）<br>$$<br>loss_{hinge}(z) = max(0, 1-z)<br>$$<br>对数损失函数<br>$$<br>loss_{exp}(z) = exp(-z)<br>$$<br>指数损失函数<br>$$<br>loss_{log}(z) = log(1 + exp(-z))<br>$$</p>
