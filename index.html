@@ -142,7 +142,9 @@
 
   <div class="container sidebar-position-left 
   page-home">
-    <div class="headband"></div>
+    <div class="headband">
+    	<a href="https://github.com/liangxun"><img width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_red_aa0000.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+    </div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
@@ -300,7 +302,7 @@
       
         
           
-            <h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>注意：损失函数和评价指标(性能度量)不是一回事儿 $ xyz $<br>损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在<em>训练集</em>的平均损失。 参考：《统计机器学习》p7-8  </p>
+            <h1 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h1><p>注意：损失函数和评价指标(性能度量)不是一回事儿<br>损失函数(loss function)和代价函数(cost function)一个意思；风险函数(risk function)可以看做是在数据集平均意义下损失函数的期望，其实可以不用很严格的区分。经验风险(empirical risk)和经验损失(empirical loss)通常混用，指的是在<em>训练集</em>的平均损失。 参考：《统计机器学习》p7-8  </p>
 <h2 id="分类任务的损失函数"><a href="#分类任务的损失函数" class="headerlink" title="分类任务的损失函数"></a>分类任务的损失函数</h2><h3 id="多分类，分类器的输出为向量"><a href="#多分类，分类器的输出为向量" class="headerlink" title="多分类，分类器的输出为向量"></a>多分类，分类器的输出为向量</h3><p><strong>交叉熵损失函数</strong><br>交叉熵与softmax不是一回事。交叉熵可以得出两个概率分布的距离，其输入为两个概率分布。经过one-hot编码的标签向量可以看做一个概率分布，而softmax是输出恰好可以看做是一个概率分布。所以交叉熵和softmax经常出现在一块，交叉熵作为一种距离度量，是属于损失函数；而softmax属于一种特殊的激活函数。 参考：《深度学习》 3.1  </p>
 <h3 id="二分类，分类器的输出为单个值："><a href="#二分类，分类器的输出为单个值：" class="headerlink" title="二分类，分类器的输出为单个值："></a>二分类，分类器的输出为单个值：</h3><p><strong>0/1损失函数</strong></p>
 <script type="math/tex; mode=display">
