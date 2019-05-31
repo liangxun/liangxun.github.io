@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="liangxun blog">
 <meta property="og:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-31T03:11:14.177Z">
+<meta property="og:updated_time" content="2019-05-31T03:13:21.159Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="svm">
 <meta name="twitter:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
@@ -302,7 +302,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  573
+                  577
                 </span>
               
 
@@ -354,7 +354,7 @@ repeat\{\\
     \}直到收敛</script><p>解释：第一步启发式地选择两个参数$\alpha_i,\alpha_j$。第二步因为实际上$\alpha_j$可以用$\alpha_i$表示，实际上只有一个自变量$\alpha_i$，而且$W(\alpha_i)$是一个二次函数。</p>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
 <li>如何理解高斯核函数RBF<script type="math/tex; mode=display">
-K(x, z) = exp(\frac{1}{2})</script></li>
+K(x, z) = exp(-\frac{||x-z||^2}{2 \alpha^2})</script></li>
 </ol>
 
       
@@ -560,7 +560,7 @@ K(x, z) = exp(\frac{1}{2})</script></li>
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共947字</span>
+  <span class="post-count">博客全站共951字</span>
 </div>
 
         
