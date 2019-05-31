@@ -301,7 +301,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  468
+                  500
                 </span>
               
 
@@ -346,7 +346,13 @@ s.t.
 \end{align}</script><p>解释：每个样本对应一个$\alpha_i$，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$</p>
 <p>接下来考虑怎么求解$\alpha$<br>最经典的是<strong>使用SMO算法求解$\alpha$</strong>。这部分可以参考<a href="http://open.163.com/movie/2008/1/9/3/M6SGF6VB4_M6SGJVA93.html" target="_blank" rel="noopener">网易公开课-机器学习-吴恩达-SMO</a>（视频从45min开始介绍用SMO求解$\alpha​$），讲解得很清楚</p>
 <p>SMO求解过程如下：</p>
-
+<script type="math/tex; mode=display">
+repeat\{\\
+    \begin{align}
+    & 第一步：select α_i,α_j   \\
+    & 第二步：optim W(α) w.r.t α_i,α_j s.t. 限制条件 \\
+    \end{align}
+    \}直到收敛</script>
           
         
       
@@ -809,7 +815,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共842字</span>
+  <span class="post-count">博客全站共874字</span>
 </div>
 
         
