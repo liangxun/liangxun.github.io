@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="liangxun blog">
 <meta property="og:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-31T03:02:50.260Z">
+<meta property="og:updated_time" content="2019-05-31T03:04:48.540Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="svm">
 <meta name="twitter:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
@@ -707,6 +707,26 @@ s.t.
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
