@@ -238,6 +238,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/05/31/svm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/05/31/svm/" itemprop="url">svm</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-31T10:49:39+08:00">
+                2019-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  400
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="svm"><a href="#svm" class="headerlink" title="svm"></a>svm</h1><p>SVM的基本问题是<br>给定数据集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}</script><p>我们的目标是要找到一个分类判决函数 $ f(x) $ </p>
+<script type="math/tex; mode=display">
+f(x)=sign(wx+b)</script><p>需要做的事情就是确定参数$w$和$b$。</p>
+<p>注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第一步用将训练数据从线性不可分空间映射到线性可分空间（核函数隐式表征的希尔伯特空间），第二步在线性可分空间中使用SVM。所以严格来说SVM是作用在线性可分空间中的，这里只介绍SVM，关于核函数在另一篇中介绍。<br>很容易构造优化问题</p>
+<script type="math/tex; mode=display">
+\min \limits_{w,b} \frac{1}{2}||w||^2  \\
+s.t. \quad y_i(w^T x_i + b) \geq 1, i=1,2,...,n</script><p>解释：<strong>优化目标一句话概括是让间隔margin最大化</strong>，知道<em>支持向量</em>和<em>分类平面</em>两个术语后，容易得出margin就是$\frac{2}{||w||}$,而最大化$\frac{2}{||w||}$和最小化$\frac{1}{2}||w||^2​$的结果是一样的<br>通过拉格朗日乘子法<sup><a href="#fn_1" id="reffn_1">1</a></sup>可以将原始问<strong>转换成到对偶问题</strong></p>
+<script type="math/tex; mode=display">
+\min \limits_{\alpha} \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j (x_i x_j) - \sum_{i=1}^n \alpha_i \\
+\begin{align}
+s.t. 
+& \sum_{i=1}^n \alpha_i y_i = 0 \\
+& \alpha_i \geq 0, \;i=1,2,···,n.
+\end{align}</script><p>解释：每个样本对应一个$\alpha_i$，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/05/10/hello/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -574,7 +728,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -653,7 +807,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共374字</span>
+  <span class="post-count">博客全站共774字</span>
 </div>
 
         

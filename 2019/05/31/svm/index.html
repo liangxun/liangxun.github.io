@@ -86,17 +86,17 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="https://liangxun.github.io/2019/05/10/hello-world/index.html">
+<meta property="og:title" content="svm">
+<meta property="og:url" content="https://liangxun.github.io/2019/05/31/svm/index.html">
 <meta property="og:site_name" content="liangxun blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-10T12:27:05.527Z">
+<meta property="og:updated_time" content="2019-05-31T03:02:50.260Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="svm">
+<meta name="twitter:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 
 
 
@@ -126,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="https://liangxun.github.io/2019/05/10/hello-world/">
+  <link rel="canonical" href="https://liangxun.github.io/2019/05/31/svm/">
 
 
 
 
 
-  <title>Hello World | liangxun blog</title>
+  <title>svm | liangxun blog</title>
   
 
 
@@ -241,7 +241,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/05/10/hello-world/">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/05/31/svm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liangxun Li">
@@ -258,7 +258,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hello World</h1>
+          <h1 class="post-title" itemprop="name headline">svm</h1>
         
 
         <div class="post-meta">
@@ -270,8 +270,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-10T20:27:05+08:00">
-                2019-05-10
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-05-31T10:49:39+08:00">
+                2019-05-31
               </time>
             
 
@@ -302,7 +302,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  73
+                  400
                 </span>
               
 
@@ -327,15 +327,22 @@
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h1 id="svm"><a href="#svm" class="headerlink" title="svm"></a>svm</h1><p>SVM的基本问题是<br>给定数据集</p>
+<script type="math/tex; mode=display">
+T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}</script><p>我们的目标是要找到一个分类判决函数 $ f(x) $ </p>
+<script type="math/tex; mode=display">
+f(x)=sign(wx+b)</script><p>需要做的事情就是确定参数$w$和$b$。</p>
+<p>注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第一步用将训练数据从线性不可分空间映射到线性可分空间（核函数隐式表征的希尔伯特空间），第二步在线性可分空间中使用SVM。所以严格来说SVM是作用在线性可分空间中的，这里只介绍SVM，关于核函数在另一篇中介绍。<br>很容易构造优化问题</p>
+<script type="math/tex; mode=display">
+\min \limits_{w,b} \frac{1}{2}||w||^2  \\
+s.t. \quad y_i(w^T x_i + b) \geq 1, i=1,2,...,n</script><p>解释：<strong>优化目标一句话概括是让间隔margin最大化</strong>，知道<em>支持向量</em>和<em>分类平面</em>两个术语后，容易得出margin就是$\frac{2}{||w||}$,而最大化$\frac{2}{||w||}$和最小化$\frac{1}{2}||w||^2​$的结果是一样的<br>通过拉格朗日乘子法<sup><a href="#fn_1" id="reffn_1">1</a></sup>可以将原始问<strong>转换成到对偶问题</strong></p>
+<script type="math/tex; mode=display">
+\min \limits_{\alpha} \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j (x_i x_j) - \sum_{i=1}^n \alpha_i \\
+\begin{align}
+s.t. 
+& \sum_{i=1}^n \alpha_i y_i = 0 \\
+& \alpha_i \geq 0, \;i=1,2,···,n.
+\end{align}</script><p>解释：每个样本对应一个$\alpha_i$，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$。</p>
 
       
     </div>
@@ -360,15 +367,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/05/10/hello/" rel="next" title="hello">
+                <i class="fa fa-chevron-left"></i> hello
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/10/hello/" rel="prev" title="hello">
-                hello <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -482,7 +489,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#svm"><span class="nav-number">1.</span> <span class="nav-text">svm</span></a></li></ol></div>
             
 
           </div>
