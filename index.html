@@ -238,6 +238,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/01/multiprocessing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/01/multiprocessing/" itemprop="url">multiprocessing</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-01T12:27:43+08:00">
+                2019-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  535
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="multiprocessing"><a href="#multiprocessing" class="headerlink" title="multiprocessing"></a>multiprocessing</h1><p>python多进程库<a href="https://docs.python.org/3.6/library/multiprocessing.html#module-multiprocessing" target="_blank" rel="noopener"><code>multiprocessing</code></a>的优点：The <code>multiprocessing</code> package offers both local and remote concurrency, effectively side-stepping the <code>Global Interpreter Lock</code> by using <em>subprocesses</em> instead of <em>threads</em>. </p>
+<h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><p>在<code>multiprocessing</code> , 用Process对象来表示一个进程，processes are spawned by creating a Process object and then calling its start() method.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">from multiprocessing import Process</span><br><span class="line">p = Process(target=f, args=(&apos;bob&apos;,))	# 定义一个进程</span><br><span class="line">p.start()	# 安装上一行的进程描述信息，fork出一个进程来</span><br></pre></td></tr></table></figure>
+<p>一般来说用到多进程的地方我们都希望创建比较多的子进程，所以<strong>进程池<a href="https://docs.python.org/3.6/library/multiprocessing.html#module-multiprocessing.pool" target="_blank" rel="noopener">Pool</a>是创建子进程的推荐用法</strong>。One can create a pool of processes which will carry out tasks submitted to it. </p>
+<p><strong>第一步：创建进程池</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">from multiprocessing import Pool</span><br><span class="line">pool = Pool(processes=4)</span><br></pre></td></tr></table></figure>
+<p><strong>第二步：向进程池中添加任务</strong><br>&lt;第一种&gt; 一次添加一个任务<br>pool.apply_async(func[, args[, kwds[, callback[, error_callback]]]])<br>&lt;第二种&gt;map自动分割数据，然后添加多个任务<br><code>ret = pool.map(func, iterable[, chunksize])</code><br>This method chops the iterable into a number of chunks which it submits to the process pool as separate tasks. 这种方法会自动将每个子进程的结果reduce一下，很好用。<br>如果数据很大的话，可以使用迭代器版本的<code>pool.imap(func, iterable[, chunksize])</code>，注意<code>imap</code>的chunksize默认为1，一般我们设置大一些更高效。<br><code>map_async(func, iterable[, chunksize[, callback[, error_callback]]])</code><br>和map一样的任务分配机制，但是使用回调函数，而不是直接返回值</p>
+<p><strong>第三步：关闭进程池入口，并且等待任务运行结束</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pool.close()</span><br><span class="line">pool.join()</span><br></pre></td></tr></table></figure>
+<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><p>进程间交换信息</p>
+<ol>
+<li>队列（Queue）</li>
+<li>one can also create a shared queue by using a manager object .</li>
+<li>管道（Pipe）</li>
+</ol>
+<p>Managers<br><a href="https://docs.python.org/3.6/library/multiprocessing.html#managers" target="_blank" rel="noopener">Maneger</a>  provide a way to create data which can be shared between different processes. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Manager</span><br><span class="line">manager = Manager()</span><br><span class="line">l_p = manager.list([i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>)])</span><br></pre></td></tr></table></figure>
+<p>manager的工作原理：A manager object controls a server process which manages shared objects. . Other processes can access the shared objects by using proxies. 就是说manager会创建一个server类型的子进程A，A专门存放共享资源，可以看做一个内存服务器。比如上面代码中<code>l_p = manager.list([i for i in range(10)])</code>中的<code>l_p</code>就是proxy，其他进程对<code>l_p</code>的操作就相当于与对A上相应资源的操作。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/05/31/svm/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -745,7 +901,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -824,7 +980,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共1k字</span>
+  <span class="post-count">博客全站共1.5k字</span>
 </div>
 
         
