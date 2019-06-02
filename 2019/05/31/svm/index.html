@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang>
+<html class="theme-next gemini use-motion" lang>
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="Machine Learning,">
 
 
 
@@ -87,13 +87,14 @@
 
 
 <meta name="description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
+<meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="svm">
 <meta property="og:url" content="https://liangxun.github.io/2019/05/31/svm/index.html">
 <meta property="og:site_name" content="liangxun blog">
 <meta property="og:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-05-31T03:33:47.167Z">
+<meta property="og:updated_time" content="2019-06-01T05:19:10.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="svm">
 <meta name="twitter:description" content="svmSVM的基本问题是给定数据集  T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}我们的目标是要找到一个分类判决函数 $ f(x) $   f(x)=sign(wx+b)需要做的事情就是确定参数$w$和$b$。 注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第">
@@ -104,7 +105,7 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Gemini',
     version: '5.1.4',
     sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
@@ -195,6 +196,26 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
           </a>
         </li>
       
@@ -375,6 +396,12 @@ K(x, z) = {(x^Tz)}^d, d >1为多项式的次数</script></li>
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+          
+        </div>
+      
 
       
       
@@ -482,6 +509,15 @@ K(x, z) = {(x^Tz)}^d, d >1为多项式的次数</script></li>
             
 
             
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
 
           </nav>
 
@@ -557,7 +593,7 @@ K(x, z) = {(x^Tz)}^d, d >1为多项式的次数</script></li>
 
 
 
-  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
 
 
 
@@ -665,6 +701,13 @@ K(x, z) = {(x^Tz)}^d, d >1为多项式的次数</script></li>
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
