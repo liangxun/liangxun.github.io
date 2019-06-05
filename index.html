@@ -258,6 +258,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/05/最大似然估计与最大后验估计/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/05/最大似然估计与最大后验估计/" itemprop="url">最大似然估计与最大后验估计</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-05T11:13:25+08:00">
+                2019-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  785
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>参考：《深度学习》p83-p88</p>
+<p>基本问题：已知包含m个样本的数据集$\mathbb X = \{ x_1, x_2,…,x_m \}$， 每个样本从真实数据分布$p_{data}(x)$中独立采样得到，现在我们希望用$p(x, \theta)$来拟合真实分布，需要做的事情就是估计参数$\theta​$。</p>
+<p>要清楚我们的求解对象是$\theta​$, 估计一个概率模型的参数的方法有很多种，最常用的是最大似然估计(Maximum Likelihood Estimation, MLE)和最大后验估计(MAximum Posteriori estimation, MAP).</p>
+<h3 id="最大似然估计"><a href="#最大似然估计" class="headerlink" title="最大似然估计"></a>最大似然估计</h3><p><strong>对$\theta​$的</strong>最大似然估计定义式为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\theta_{ML}=& \mathop{\arg\max}_{\theta} p(\mathbb X, \theta) \\
+           =& \mathop{\arg\max}_{\theta} \prod_{i=0}^m p(x_i, \theta)
+\end{align}</script><p>通常我们会通过对数将乘积转化成便于计算的求和形式</p>
+<script type="math/tex; mode=display">
+\theta_{ML} = \mathop{\arg\max}_{\theta} \sum_{i=1}^m log p(x_i, \theta)</script><p>注意我们要求解的目标是$\theta​$, 而$ \mathop{\max}\prod_{i=0}^m p(x_i, \theta) ​$和$\mathop{\max} \sum_{i=1}^m log p(x_i, \theta)​$对应的$\theta​$是一样的。所以不管最大化似然还是最大化对数似然(似然的对数)得到的结果是一样的，通常<em>最大似然</em>和<em>最大对数似然</em>这两个术语可以混用。</p>
+<h3 id="最大后验估计"><a href="#最大后验估计" class="headerlink" title="最大后验估计"></a>最大后验估计</h3><p>最大后验估计是从贝叶斯估计推导出来的，但是不能完全等同于贝叶斯估计，可以把最大后验估看做是贝叶斯估计的简化实用版本。</p>
+<p><strong>频率派</strong>的视角是<strong>真实参数$\theta$是</strong>未知的<strong>定值</strong>。而数据集是随机采样得到，是随机的。<strong>贝叶斯统计</strong>的视角认为数据集能够被直接观测到，因此不是随机的；反而是<strong>真实参数$\theta​$是</strong>未知或不确定的，因此可以表示成<strong>随机变量</strong>。</p>
+<p>对本文开头的基本问题，贝叶斯估计不是给$\theta​$赋某个值，而是给出$\theta​$的概率分布，理由很简单，因为贝叶斯认为$\theta​$是个随机变量，那自然是用概率分布来描述随机变量。贝叶斯估计$\theta​$ 首先需要人为设定$\theta​$ 的<strong>先验(prior)</strong>概率分布 $p_{prior}(\theta)​$, 然后在观察数据集的条件下用贝叶斯公式得到$\theta​$的<strong>后验(poster)</strong>概率分布$p_{poster}​$，后验概率就看做是贝叶斯估计求解出来的$\theta​$.</p>
+<script type="math/tex; mode=display">
+p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,x_m)}</script><p>可以看出贝叶斯估计给出结果是一个概率分布$p_{poster}$，在预测新的样本时候是就用全概率公式做概率加权运算。这种预测是很好，但不怎么方便，我们还是希望给定$\theta$一个定值，最大后验估计其实就是将$p_{poster}$中概率密度最大的点作为$\theta​$的值，即</p>
+<script type="math/tex; mode=display">
+\theta_{MAL} = \mathop{\arg\max}_{\theta} p_{poster}(\theta)</script><h3 id="概念术语"><a href="#概念术语" class="headerlink" title="概念术语"></a>概念术语</h3><ol>
+<li>似然和概率</li>
+<li>贝叶斯公式<br> 贝叶斯公式(Bayes)<script type="math/tex; mode=display">
+ P(x|y) = \frac{P(y|x)P(x)}{P(y)}</script> 贝叶斯公式可以从条件概率的定义直接推导得出。</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/01/multiprocessing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -919,7 +1079,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1007,7 +1167,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共1.8k字</span>
+  <span class="post-count">博客全站共2.6k字</span>
 </div>
 
         
