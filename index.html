@@ -476,7 +476,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  1.4k
+                  1.6k
                 </span>
               
 
@@ -504,16 +504,21 @@
         
           
             <h1 id="维度问题"><a href="#维度问题" class="headerlink" title="维度问题"></a>维度问题</h1><p>一般来说，我们希望特征表示向量维度不要太高，因为高维情形下存在“维数灾难”问题，并且高维特征中往往很多是冗余的。但是如果是稀疏的高维表示又存在好处：高维稀疏表示通常会使得问题线性可分，SVM的核技巧就是在做升维变换。所有有时我们需要将维度从大变小，有时我们需要将维度从小变大。  </p>
-<h2 id="维度从大到小"><a href="#维度从大到小" class="headerlink" title="维度从大到小"></a>维度从大到小</h2><h3 id="维数灾难-curse-of-dimensionality"><a href="#维数灾难-curse-of-dimensionality" class="headerlink" title="维数灾难(curse of dimensionality)"></a>维数灾难(curse of dimensionality)</h3><p>参考文献： 《PR&amp;ML》1.4 pp34<br>维数灾难指的是在高维情况下出现的数据样本稀疏（特征空间中的样本密度低）、距离计算困难等问题。解决维数灾难的两个重要途径<sup><a href="#fn_1" id="reffn_1">1</a></sup>：1. <strong>降维</strong>； 2. <strong>特征选择</strong>。 两种方法导致的结果其实都是减小特征向量的维度。注意特征选择的原因除了解决维度灾难，还有去掉与任务无关（冗余）特征的作用。</p>
-<h3 id="降维"><a href="#降维" class="headerlink" title="降维"></a>降维</h3><p>降维是无监督的</p>
-<h4 id="主成分分析-Principal-Component-Analysis-PCA"><a href="#主成分分析-Principal-Component-Analysis-PCA" class="headerlink" title="主成分分析(Principal Component Analysis, PCA)"></a>主成分分析(Principal Component Analysis, PCA)</h4><p>参考：<a href="https://blog.csdn.net/HLBoy_happy/article/details/77146012" target="_blank" rel="noopener">通俗理解PCA降维作用</a>  </p>
-<p>PCA是最经典的无监督降维方法。矩阵的主成分是其协方差矩阵的特征向量按照对应的特征值大小排序得到的。  </p>
-<h3 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h3><p>特征选择有两个原因：1. 减轻维数灾难问题；2.去除不相关特征往往会降低学习任务的难度。特征选择比较典型的做法是分阶段：第一步先用特征选择过程对初始特征进行“过滤”，第二步再用过滤后的特征来训练模型。还有一种间接的特征选择方法是通过正则化影响优化过程，使得学习到稀疏解，稀疏解中0对应的特征就可以看做是被过滤掉的无用特征。</p>
-<h4 id="分阶段"><a href="#分阶段" class="headerlink" title="分阶段"></a>分阶段</h4><p>先特征选择，然后训练模型是最典型机器学习方式。简单来说，就是从一大堆特征中选择最重要的一些特征。什么特征是重要的呢？我们人为指定评价标准。通常来说是设计一个相关统计量来衡量某个特征与任务的相关程度，然后选择出相关统计量最大的k个特征。我们可以同时独立地选择k个特征，也可以以贪心算法迭代挑选出k个特征。</p>
-<h5 id="同时独立选择k个特征"><a href="#同时独立选择k个特征" class="headerlink" title="同时独立选择k个特征"></a>同时独立选择k个特征</h5><p>比如<code>sklearn</code>中的特征选择模块中的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html" target="_blank" rel="noopener"><code>SelectKBest</code></a>和卡方检验<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" target="_blank" rel="noopener"><code>chi2</code></a>配合使用就是典型的例子。卡方检验的得分就是我们定义的相关统计量，然后根据这个相关统计量选择得分最高的top-k个特征。除了卡方检验，常用的相关统计量还有<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.mutual_info_classif.html#r50b872b699c4-1" target="_blank" rel="noopener">互信息熵 mutual_info</a>等。  </p>
-<h5 id="贪心迭代挑选k个特征"><a href="#贪心迭代挑选k个特征" class="headerlink" title="贪心迭代挑选k个特征"></a>贪心迭代挑选k个特征</h5><p>类似决策树算法，参考《机器学习》p248.  </p>
-<h4 id="稀疏解"><a href="#稀疏解" class="headerlink" title="稀疏解"></a>稀疏解</h4><p>参考《机器学习》p252.<br>L1正则化可以鼓励优化算法得到模型的稀疏解<sup><a href="#fn_2" id="reffn_2">2</a></sup> 。 以线性模型为例，参数$ \boldsymbol w $取得稀疏解以为这初始的$d$个特征中仅有对应着$ \boldsymbol w $ 的非零分量的特征才会出现在最终的模型中，这其实就是间接完成了特征选择目的。这里的稀疏解也可以成为参数稀疏，注意参数稀疏和特征稀疏（稀疏表示）不是一回事，前者的对象是<em>参数向量</em>，后者的对象是<em>特征表示向量</em>。<br>有篇博客<a href="https://blog.csdn.net/a362682954/article/details/85226022" target="_blank" rel="noopener">稀疏性的优点</a>总结了参数稀疏的优点有：1. 起到特征选择的作用， 2. 可解释。但这篇博客混淆了参数稀疏和特征稀疏， 线性可分和稀疏存储是特征稀疏带来的好处。</p>
-<h2 id="维度从小到大"><a href="#维度从小到大" class="headerlink" title="维度从小到大"></a>维度从小到大</h2><p>参考《机器学习》p255.<br>稀疏表示的好处简单来说就是：维度越高则<strong>线性可分</strong>的概率越高。而且稀疏表示并不会造成存储或计算上的巨大负担，因为稀疏矩阵有很多高效的存储方法和计算加速。<br>稀疏表示具有上述优势，所以我们希望把样本表示成稀疏形式。稀疏表示是我们的目的，而高维往往是稀疏的必要条件，所以我们才冒着“维度灾难”的风险升维。把原始低纬的特征映射成高维稀疏特征的过程叫做<strong>稀疏编码</strong>或<strong>字典学习</strong>。<br>SVM的核方法就是这个思路<sup><a href="#fn_3" id="reffn_3">3</a></sup>，对于在原始空间内线性不可分的情况，可以将样本从原始空间映射到一个更高维的特征空间，在这个高维特征中间内是线性可分的。比如高斯核所代表的映射就是讲原始空间映射到无限维的希尔伯特空间，理论上来说无限维那肯定是相当的稀疏，妥妥的线性可分。当然无限维中的计算是维度灾难，而核技巧通过定义核函数巧妙地绕过了计算问题。</p>
+<h2 id="1-维度从大到小"><a href="#1-维度从大到小" class="headerlink" title="1. 维度从大到小"></a>1. 维度从大到小</h2><h3 id="1-1-维数灾难-curse-of-dimensionality"><a href="#1-1-维数灾难-curse-of-dimensionality" class="headerlink" title="1.1 维数灾难(curse of dimensionality)"></a>1.1 维数灾难(curse of dimensionality)</h3><p>参考文献： 《PR&amp;ML》1.4 pp34<br>维数灾难指的是在高维情况下出现的数据样本稀疏（特征空间中的样本密度低）、距离计算困难等问题。解决维数灾难的两个重要途径<sup><a href="#fn_1" id="reffn_1">1</a></sup>：1. <strong>降维</strong>； 2. <strong>特征选择</strong>。 两种方法导致的结果其实都是减小特征向量的维度。注意特征选择的原因除了解决维度灾难，还有去掉与任务无关（冗余）特征的作用。</p>
+<h3 id="1-2-降维"><a href="#1-2-降维" class="headerlink" title="1.2 降维"></a>1.2 降维</h3><p>降维是无监督的</p>
+<h4 id="1-2-1-主成分分析-Principal-Component-Analysis-PCA"><a href="#1-2-1-主成分分析-Principal-Component-Analysis-PCA" class="headerlink" title="1.2.1 主成分分析(Principal Component Analysis, PCA)"></a>1.2.1 主成分分析(Principal Component Analysis, PCA)</h4><p>参考：<a href="https://blog.csdn.net/HLBoy_happy/article/details/77146012" target="_blank" rel="noopener">通俗理解PCA降维作用</a>, <a href="https://blog.csdn.net/hustqb/article/details/78394058" target="_blank" rel="noopener">图文并茂的PCA教程</a><br>PCA是最经典的无监督降维方法。上面两篇博客对PCA介绍得非常详细。这里只简单列出PCA的步骤。<br><strong>基本问题</strong>：已知数据集有m个数据，每个数据用d维的向量表示，整个数据集表示为$d \times m$的矩阵$\boldsymbol X$.(注意这里$\boldsymbol X$的每一列代表样本，和常用的设计矩阵稍微不同)<br><strong>目标</strong>：我们希望得到一个$d \times d^{‘} $的转换矩阵$\boldsymbol W$,  通过$\boldsymbol X = \boldsymbol W \boldsymbol X$就将每个样本表示成$d^{‘}$的向量了。<br><strong>计算$\boldsymbol W$</strong>: </p>
+<ol>
+<li>对样本做中心化处理，即将每个特征维度的均值变为0，这样后面计算协方差的时候更方便</li>
+<li>计算协方差矩阵$\boldsymbol A = \boldsymbol X \boldsymbol X^{T}$，$\boldsymbol A$是$d \times d$的矩阵，其中$ {\boldsymbol A}_{ij}$ 表示特征i与特征j之间的协方差</li>
+<li>对协方差矩阵$\boldsymbol A$做特征分解，即计算特征值和特征向量</li>
+<li>对特征值排序，取最大的$d^{‘}$个特征值对应的特征向量构成转换矩阵$\boldsymbol W$.</li>
+</ol>
+<h3 id="1-3-特征选择"><a href="#1-3-特征选择" class="headerlink" title="1.3 特征选择"></a>1.3 特征选择</h3><p>特征选择有两个原因：1. 减轻维数灾难问题；2.去除不相关特征往往会降低学习任务的难度。特征选择比较典型的做法是分阶段：第一步先用特征选择过程对初始特征进行“过滤”，第二步再用过滤后的特征来训练模型。还有一种间接的特征选择方法是通过正则化影响优化过程，使得学习到稀疏解，稀疏解中0对应的特征就可以看做是被过滤掉的无用特征。</p>
+<h4 id="1-3-1-分阶段"><a href="#1-3-1-分阶段" class="headerlink" title="1.3.1 分阶段"></a>1.3.1 分阶段</h4><p>先特征选择，然后训练模型是最典型机器学习方式。简单来说，就是从一大堆特征中选择最重要的一些特征。什么特征是重要的呢？我们人为指定评价标准。通常来说是设计一个相关统计量来衡量某个特征与任务的相关程度，然后选择出相关统计量最大的k个特征。我们可以同时独立地选择k个特征，也可以以贪心算法迭代挑选出k个特征。</p>
+<h5 id="1-3-1-1-同时独立选择k个特征"><a href="#1-3-1-1-同时独立选择k个特征" class="headerlink" title="1.3.1.1 同时独立选择k个特征"></a>1.3.1.1 同时独立选择k个特征</h5><p>比如<code>sklearn</code>中的特征选择模块中的<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectKBest.html" target="_blank" rel="noopener"><code>SelectKBest</code></a>和卡方检验<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.chi2.html#sklearn.feature_selection.chi2" target="_blank" rel="noopener"><code>chi2</code></a>配合使用就是典型的例子。卡方检验的得分就是我们定义的相关统计量，然后根据这个相关统计量选择得分最高的top-k个特征。除了卡方检验，常用的相关统计量还有<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.mutual_info_classif.html#r50b872b699c4-1" target="_blank" rel="noopener">互信息熵 mutual_info</a>等。  </p>
+<h5 id="1-3-1-2-贪心迭代挑选k个特征"><a href="#1-3-1-2-贪心迭代挑选k个特征" class="headerlink" title="1.3.1.2 贪心迭代挑选k个特征"></a>1.3.1.2 贪心迭代挑选k个特征</h5><p>类似决策树算法，参考《机器学习》p248.  </p>
+<h4 id="1-3-2-稀疏解"><a href="#1-3-2-稀疏解" class="headerlink" title="1.3.2 稀疏解"></a>1.3.2 稀疏解</h4><p>参考《机器学习》p252.<br>L1正则化可以鼓励优化算法得到模型的稀疏解<sup><a href="#fn_2" id="reffn_2">2</a></sup> 。 以线性模型为例，参数$ \boldsymbol w $取得稀疏解以为这初始的$d$个特征中仅有对应着$ \boldsymbol w $ 的非零分量的特征才会出现在最终的模型中，这其实就是间接完成了特征选择目的。这里的稀疏解也可以成为参数稀疏，注意参数稀疏和特征稀疏（稀疏表示）不是一回事，前者的对象是<em>参数向量</em>，后者的对象是<em>特征表示向量</em>。<br>有篇博客<a href="https://blog.csdn.net/a362682954/article/details/85226022" target="_blank" rel="noopener">稀疏性的优点</a>总结了参数稀疏的优点有：1. 起到特征选择的作用， 2. 可解释。但这篇博客混淆了参数稀疏和特征稀疏， 线性可分和稀疏存储是特征稀疏带来的好处。</p>
+<h2 id="2-维度从小到大"><a href="#2-维度从小到大" class="headerlink" title="2. 维度从小到大"></a>2. 维度从小到大</h2><p>参考《机器学习》p255.<br>稀疏表示的好处简单来说就是：维度越高则<strong>线性可分</strong>的概率越高。而且稀疏表示并不会造成存储或计算上的巨大负担，因为稀疏矩阵有很多高效的存储方法和计算加速。<br>稀疏表示具有上述优势，所以我们希望把样本表示成稀疏形式。稀疏表示是我们的目的，而高维往往是稀疏的必要条件，所以我们才冒着“维度灾难”的风险升维。把原始低纬的特征映射成高维稀疏特征的过程叫做<strong>稀疏编码</strong>或<strong>字典学习</strong>。<br>SVM的核方法就是这个思路<sup><a href="#fn_3" id="reffn_3">3</a></sup>，对于在原始空间内线性不可分的情况，可以将样本从原始空间映射到一个更高维的特征空间，在这个高维特征中间内是线性可分的。比如高斯核所代表的映射就是讲原始空间映射到无限维的希尔伯特空间，理论上来说无限维那肯定是相当的稀疏，妥妥的线性可分。当然无限维中的计算是维度灾难，而核技巧通过定义核函数巧妙地绕过了计算问题。</p>
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><blockquote id="fn_1">
 <sup>1</sup>. 《机器学习》p227<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
@@ -1480,7 +1485,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共4.9k字</span>
+  <span class="post-count">博客全站共5.1k字</span>
 </div>
 
         
