@@ -258,6 +258,161 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/21/评价指标/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/21/评价指标/" itemprop="url">评价指标</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-21T17:45:02+08:00">
+                2019-06-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  941
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="评价指标"><a href="#评价指标" class="headerlink" title="评价指标"></a>评价指标</h1><p>不同任务的评价指标不一样，每个指标都有其适用的场景。</p>
+<h2 id="分类问题"><a href="#分类问题" class="headerlink" title="分类问题"></a>分类问题</h2><h3 id="二分类"><a href="#二分类" class="headerlink" title="二分类"></a>二分类</h3><p><strong>混淆矩阵(confusion matrix)</strong>是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，<strong>行代表真实情况，列表示预测情况</strong>。P表示Positive(正例)，N表示Negtive(负例)；以<strong>TP</strong>为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(True)/False).<br><img src="/2019/06/21/评价指标/confusion_matrix.svg" alt="混淆矩阵">  </p>
+<p>基于混淆矩阵定义的指标<br><strong>精确率(Precision)</strong>：$P=\frac{TP}{TP+FP}$ . 表示在所有<em>预测为</em>P的样本中，有多少<em>真的是</em>P<br><strong>召回率(Recall)</strong>: $R=\frac{TP}{TP+FN}$ . 表示真正为P的样本中，有多少被检测出来<br>（在恶意检测场景下，通常我们把恶意样本称为正例，把正常样本称为负例）<br><strong>F1-Score</strong>: $F1 = \frac{2 \times P \times R}{P + R}$. F1值定义为召回率和精确率调和平均的2倍（之所以2倍是为了让F1的值域为$[0-1]$）。F1为什么使用调和平均而不是算术平均？调和平均强调了较小值得重要性，比如当召回率接近0，精确率接近1，这其实是很 糟糕的情况，算术平均是0.5， 而调和平均接近0。  </p>
+<p><strong>问题：F1-score和accuracy(准确率)的区别</strong>：准确率的定义为$acc = \frac{TP + TN}{ TP + TN + FP +FN} = \frac{T}{T+F}$，从定义式可以看出准确率只关注正确与否，对真实情况中的每个类都一视同仁；而F1值以精确率和召回率为基础，精确率和召回率都是围绕着TP，所以F1的关注对象是正类这一个类。比如说，二分类问题的两个类分别是A和B，我们可以为A类计算F1值(或召回率、精确率)，也可以给B类计算F1值(或召回率、精确率)；准确率则不存在说是给某个类计算的，它是一个整体的标准。适用场景：如果每个类都同等重要，那么可以选用ACC，ACC计算也简单，比如在图像分类中ACC就用得多；如果我们更关注某个类或者存在数据不平衡的情况下，用F1值较好，在异常检测等场景用F1就比较多。<br>举例说明：有如下混淆矩阵</p>
+<script type="math/tex; mode=display">
+\begin{matrix}
+5 & 5 \\
+5 & 995
+\end{matrix}</script><p>明显数据不平衡，这在异常检测中很常见，把异常定义为正例，那异常样本的数量本来就少。这个混淆矩阵算出来$acc= \frac{1000}{1010} = 0.99$，简直不要太好；而$F1 = 0.5$。 显然这种情况用F1会更合适。  </p>
+<p><strong>问题：Pricision, Recall 和 TPR, FPR 几个术语的区分</strong>：<br>真正例率(True Positive Rate, TPR): $TPR = \frac{TP}{TP+FN}$<br>假正例率(False Positive Rate, FPR): $FPR = \frac{FP}{FP + TN}$   </p>
+<ul>
+<li>Recall和TPR的定义完全一样，是一个意思；</li>
+<li>Recall(TPR), FPR是从行的角度统计，分母是某一行加起来，分子是该行中的特定列；</li>
+<li>Pricision是从列的角度统计，分母是第一列加起来，分子是该列的第一行；</li>
+<li>Pricision和Recall以及F1通常一起出现；TPR和FPR以及ROC常常一块出现。</li>
+</ul>
+<h3 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h3><p>虽然F1可以推广到多分类的情况（macro-F1或者micro-F1），但是这样用的很少；因为既然是多分类，那么一般来说每个类都同等重要，很少有数据不平衡的现象。对于多分类问题直接用准确率最好，计算简单。有些论文里面会用错误率， 错误率 = 1 - 准确率.</p>
+<h2 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h2>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/18/维度问题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1237,7 +1392,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1325,7 +1480,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共3.9k字</span>
+  <span class="post-count">博客全站共4.9k字</span>
 </div>
 
         
