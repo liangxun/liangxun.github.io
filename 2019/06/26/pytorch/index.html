@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="Machine Learning,">
+  <meta name="keywords" content="DeploySystem,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="参考：《深度学习》p83-p88 基本问题：已知包含m个样本的数据集$\mathbb X = \{ x_1, x_2,…,x_m \}$， 每个样本从真实数据分布$p_{data}(x)$中独立采样得到，现在我们希望用$p(x, \theta)$来拟合真实分布，需要做的事情就是估计参数$\theta​$。 要清楚我们的求解对象是$\theta​$, 估计一个概率模型的参数的方法有很多种，最常用的是">
-<meta name="keywords" content="Machine Learning">
+<meta name="description" content="pytorch什么时候共享内存？pytorch的数据加载机制《笔记本A》 p-4参考：官网 文档, pytorch学习笔记（十四）： DataLoader源码阅读 整体流程数据加载模块核心的数据抽象是DataLoader,  一般构造如下 1data_loader = DataLoader(dataset, batch_size=1, shuffle=False) 在DataLoader的构造函数">
+<meta name="keywords" content="DeploySystem">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最大似然估计与最大后验估计">
-<meta property="og:url" content="https://liangxun.github.io/2019/06/05/最大似然估计与最大后验估计/index.html">
+<meta property="og:title" content="pytorch">
+<meta property="og:url" content="https://liangxun.github.io/2019/06/26/pytorch/index.html">
 <meta property="og:site_name" content="liangxun blog">
-<meta property="og:description" content="参考：《深度学习》p83-p88 基本问题：已知包含m个样本的数据集$\mathbb X = \{ x_1, x_2,…,x_m \}$， 每个样本从真实数据分布$p_{data}(x)$中独立采样得到，现在我们希望用$p(x, \theta)$来拟合真实分布，需要做的事情就是估计参数$\theta​$。 要清楚我们的求解对象是$\theta​$, 估计一个概率模型的参数的方法有很多种，最常用的是">
+<meta property="og:description" content="pytorch什么时候共享内存？pytorch的数据加载机制《笔记本A》 p-4参考：官网 文档, pytorch学习笔记（十四）： DataLoader源码阅读 整体流程数据加载模块核心的数据抽象是DataLoader,  一般构造如下 1data_loader = DataLoader(dataset, batch_size=1, shuffle=False) 在DataLoader的构造函数">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-06-05T03:14:23.990Z">
+<meta property="og:updated_time" content="2019-06-26T12:16:49.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="最大似然估计与最大后验估计">
-<meta name="twitter:description" content="参考：《深度学习》p83-p88 基本问题：已知包含m个样本的数据集$\mathbb X = \{ x_1, x_2,…,x_m \}$， 每个样本从真实数据分布$p_{data}(x)$中独立采样得到，现在我们希望用$p(x, \theta)$来拟合真实分布，需要做的事情就是估计参数$\theta​$。 要清楚我们的求解对象是$\theta​$, 估计一个概率模型的参数的方法有很多种，最常用的是">
+<meta name="twitter:title" content="pytorch">
+<meta name="twitter:description" content="pytorch什么时候共享内存？pytorch的数据加载机制《笔记本A》 p-4参考：官网 文档, pytorch学习笔记（十四）： DataLoader源码阅读 整体流程数据加载模块核心的数据抽象是DataLoader,  一般构造如下 1data_loader = DataLoader(dataset, batch_size=1, shuffle=False) 在DataLoader的构造函数">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://liangxun.github.io/2019/06/05/最大似然估计与最大后验估计/">
+  <link rel="canonical" href="https://liangxun.github.io/2019/06/26/pytorch/">
 
 
 
 
 
-  <title>最大似然估计与最大后验估计 | liangxun blog</title>
+  <title>pytorch | liangxun blog</title>
   
 
 
@@ -262,7 +262,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/05/最大似然估计与最大后验估计/">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/26/pytorch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liangxun Li">
@@ -279,7 +279,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">最大似然估计与最大后验估计</h1>
+          <h1 class="post-title" itemprop="name headline">pytorch</h1>
         
 
         <div class="post-meta">
@@ -291,8 +291,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-05T11:13:25+08:00">
-                2019-06-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-26T20:14:02+08:00">
+                2019-06-26
               </time>
             
 
@@ -323,7 +323,7 @@
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  785
+                  750
                 </span>
               
 
@@ -348,28 +348,18 @@
       
 
       
-        <p>参考：《深度学习》p83-p88</p>
-<p>基本问题：已知包含m个样本的数据集$\mathbb X = \{ x_1, x_2,…,x_m \}$， 每个样本从真实数据分布$p_{data}(x)$中独立采样得到，现在我们希望用$p(x, \theta)$来拟合真实分布，需要做的事情就是估计参数$\theta​$。</p>
-<p>要清楚我们的求解对象是$\theta​$, 估计一个概率模型的参数的方法有很多种，最常用的是最大似然估计(Maximum Likelihood Estimation, MLE)和最大后验估计(MAximum Posteriori estimation, MAP).</p>
-<h3 id="最大似然估计"><a href="#最大似然估计" class="headerlink" title="最大似然估计"></a>最大似然估计</h3><p><strong>对$\theta​$的</strong>最大似然估计定义式为：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-\theta_{ML}=& \mathop{\arg\max}_{\theta} p(\mathbb X, \theta) \\
-           =& \mathop{\arg\max}_{\theta} \prod_{i=0}^m p(x_i, \theta)
-\end{align}</script><p>通常我们会通过对数将乘积转化成便于计算的求和形式</p>
-<script type="math/tex; mode=display">
-\theta_{ML} = \mathop{\arg\max}_{\theta} \sum_{i=1}^m log p(x_i, \theta)</script><p>注意我们要求解的目标是$\theta​$, 而$ \mathop{\max}\prod_{i=0}^m p(x_i, \theta) ​$和$\mathop{\max} \sum_{i=1}^m log p(x_i, \theta)​$对应的$\theta​$是一样的。所以不管最大化似然还是最大化对数似然(似然的对数)得到的结果是一样的，通常<em>最大似然</em>和<em>最大对数似然</em>这两个术语可以混用。</p>
-<h3 id="最大后验估计"><a href="#最大后验估计" class="headerlink" title="最大后验估计"></a>最大后验估计</h3><p>最大后验估计是从贝叶斯估计推导出来的，但是不能完全等同于贝叶斯估计，可以把最大后验估看做是贝叶斯估计的简化实用版本。</p>
-<p><strong>频率派</strong>的视角是<strong>真实参数$\theta$是</strong>未知的<strong>定值</strong>。而数据集是随机采样得到，是随机的。<strong>贝叶斯统计</strong>的视角认为数据集能够被直接观测到，因此不是随机的；反而是<strong>真实参数$\theta​$是</strong>未知或不确定的，因此可以表示成<strong>随机变量</strong>。</p>
-<p>对本文开头的基本问题，贝叶斯估计不是给$\theta​$赋某个值，而是给出$\theta​$的概率分布，理由很简单，因为贝叶斯认为$\theta​$是个随机变量，那自然是用概率分布来描述随机变量。贝叶斯估计$\theta​$ 首先需要人为设定$\theta​$ 的<strong>先验(prior)</strong>概率分布 $p_{prior}(\theta)​$, 然后在观察数据集的条件下用贝叶斯公式得到$\theta​$的<strong>后验(poster)</strong>概率分布$p_{poster}​$，后验概率就看做是贝叶斯估计求解出来的$\theta​$.</p>
-<script type="math/tex; mode=display">
-p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,x_m)}</script><p>可以看出贝叶斯估计给出结果是一个概率分布$p_{poster}$，在预测新的样本时候是就用全概率公式做概率加权运算。这种预测是很好，但不怎么方便，我们还是希望给定$\theta$一个定值，最大后验估计其实就是将$p_{poster}$中概率密度最大的点作为$\theta​$的值，即</p>
-<script type="math/tex; mode=display">
-\theta_{MAL} = \mathop{\arg\max}_{\theta} p_{poster}(\theta)</script><h3 id="概念术语"><a href="#概念术语" class="headerlink" title="概念术语"></a>概念术语</h3><ol>
-<li>似然和概率</li>
-<li>贝叶斯公式<br> 贝叶斯公式(Bayes)<script type="math/tex; mode=display">
- P(x|y) = \frac{P(y|x)P(x)}{P(y)}</script> 贝叶斯公式可以从条件概率的定义直接推导得出。</li>
-</ol>
+        <h1 id="pytorch"><a href="#pytorch" class="headerlink" title="pytorch"></a>pytorch</h1><h2 id="什么时候共享内存？"><a href="#什么时候共享内存？" class="headerlink" title="什么时候共享内存？"></a>什么时候共享内存？</h2><h2 id="pytorch的数据加载机制"><a href="#pytorch的数据加载机制" class="headerlink" title="pytorch的数据加载机制"></a>pytorch的数据加载机制</h2><p>《笔记本A》 p-4<br>参考：<a href="https://pytorch.org/docs/stable/data.html#module-torch.utils.data" target="_blank" rel="noopener">官网 文档</a>, <a href="https://blog.csdn.net/u012436149/article/details/78545766" target="_blank" rel="noopener">pytorch学习笔记（十四）： DataLoader源码阅读</a></p>
+<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><p>数据加载模块核心的数据抽象是<a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" target="_blank" rel="noopener"><code>DataLoader</code></a>,  一般构造如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_loader = DataLoader(dataset, batch_size=1, shuffle=False)</span><br></pre></td></tr></table></figure>
+<p>在<code>DataLoader</code>的构造函数中，会创建一个采样器（实际上是两个，一个<code>batch_sampler</code>, 一个基采样器，比如<code>RandomSampler</code>）。数据加载器典型的用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for ep in range(epoches):</span><br><span class="line">	for x, y in data_loader:</span><br><span class="line">		out = model.forward(x)</span><br></pre></td></tr></table></figure>
+<p><strong><code>data_loader</code>是一个可迭代对象</strong>，根据<code>for</code>语句的执行机制，首先会调用可迭代对象的<code>__iter__()</code>函数得到一个<strong>迭代器<code>DataLoaderIter</code></strong>，然后不断地调用迭代器的<code>__next__()</code>来循环。记住<code>data_loader</code>是一个可迭代对象而不是迭代器，所以可以不断地循环。</p>
+<p>这里有一个问题，<strong>怎么保证每个epoch的迭代不一样？</strong>这就要说到采样器<code>Sampler</code>，前面提到采样器是在<code>DataLoader</code>的构造函数中被初始化的，<strong>采样器<code>Sampler</code>也是一个可迭代对象</strong>。上一段说到，在执行<code>for</code>的时候，会调用数据加载器<code>data_loader</code>的<code>__iter__()</code>函数得到迭代器<code>DataLoaderIter</code>， 而<strong>在<code>DataLoaderIter</code>的构造函数中会调用采样器<code>sampler</code>的<code>__iter__()</code>函数得到采样迭代器</strong>，shuffle操作是放在<code>sampler</code>的<code>__iter__()</code>函数中完成的。这样设计就是在一个epoch内，有一个数据加载迭代器和一个采样迭代器，初始化数据迭代器的时候会初始化采样迭代器，构造采样迭代器的时候会扰乱一下索引列表，从而每个epoch跌打的数据顺序是不同的。当然只有<code>RandomSampler</code>会打乱索引列表，<code>SquentialSampler</code>每个epoch都是结果都是一样的，采样器的内部机制在下一节介绍。</p>
+<h3 id="采样器"><a href="#采样器" class="headerlink" title="采样器"></a>采样器</h3><p>采样器可以自定义，但pytorch 预定义了几个采样器，通常都是用预定义的采样器就够了。常用的有下面两个：<code>RandomSampler</code>, <code>SquentialSampler</code>。 下面是<code>SquentialSampler</code>的定义，没错，就是这么几行；<code>RandomSampler</code>也差不多，只不过在12行的<code>__iter__()</code>函数体中把索引列表打乱了一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class SequentialSampler(Sampler):</span><br><span class="line">    r&quot;&quot;&quot;Samples elements sequentially, always in the same order.</span><br><span class="line"></span><br><span class="line">    Arguments:</span><br><span class="line">        data_source (Dataset): dataset to sample from</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, data_source):</span><br><span class="line">        self.data_source = data_source</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return iter(range(len(self.data_source)))</span><br><span class="line"></span><br><span class="line">    def __len__(self):</span><br><span class="line">        return len(self.data_source)</span><br></pre></td></tr></table></figure>
+<p>上面两个采样器的迭代器每次只会抛出一个索引，为了 方便得到一批索引，又在其上封装了<code>BatchSampler</code>类，只要参数<code>batch_size &gt; 1</code>, 就会使用<code>BatchSampler</code>。</p>
+<p>参数<code>shuffle</code>用来指定我们要用哪个预定义采样器。从下面代码中的6-9行可以看出来，<code>shuffle=True</code>其实就是选择了 <code>RandomSampler</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> sampler <span class="keyword">is</span> <span class="literal">None</span>:  <span class="comment"># give default samplers</span></span><br><span class="line">	<span class="keyword">if</span> self.dataset_kind == _DatasetKind.Iterable:</span><br><span class="line">		<span class="comment"># See NOTE [ Custom Samplers and IterableDataset ]</span></span><br><span class="line">		sampler = _InfiniteConstantSampler()</span><br><span class="line">	<span class="keyword">else</span>:  <span class="comment"># map-style</span></span><br><span class="line">		<span class="keyword">if</span> shuffle:</span><br><span class="line">			sampler = RandomSampler(dataset)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			sampler = SequentialSampler(dataset)</span><br><span class="line">			</span><br><span class="line"><span class="keyword">if</span> batch_size <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> batch_sampler <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="comment"># auto_collation without custom batch_sampler</span></span><br><span class="line">	batch_sampler = BatchSampler(sampler, batch_size, drop_last)</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -387,7 +377,7 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
       
         <div class="post-tags">
           
-            <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+            <a href="/tags/DeploySystem/" rel="tag"># DeploySystem</a>
           
         </div>
       
@@ -400,8 +390,8 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/01/multiprocessing/" rel="next" title="multiprocessing">
-                <i class="fa fa-chevron-left"></i> multiprocessing
+              <a href="/2019/06/21/评价指标/" rel="next" title="评价指标">
+                <i class="fa fa-chevron-left"></i> 评价指标
               </a>
             
           </div>
@@ -409,10 +399,6 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/06/18/维度问题/" rel="prev" title="维度问题">
-                维度问题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -535,7 +521,7 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#最大似然估计"><span class="nav-number">1.</span> <span class="nav-text">最大似然估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最大后验估计"><span class="nav-number">2.</span> <span class="nav-text">最大后验估计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概念术语"><span class="nav-number">3.</span> <span class="nav-text">概念术语</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pytorch"><span class="nav-number">1.</span> <span class="nav-text">pytorch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么时候共享内存？"><span class="nav-number">1.1.</span> <span class="nav-text">什么时候共享内存？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pytorch的数据加载机制"><span class="nav-number">1.2.</span> <span class="nav-text">pytorch的数据加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#整体流程"><span class="nav-number">1.2.1.</span> <span class="nav-text">整体流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#采样器"><span class="nav-number">1.2.2.</span> <span class="nav-text">采样器</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -760,26 +746,6 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 

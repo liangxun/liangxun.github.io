@@ -258,6 +258,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/26/pytorch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/06/26/pytorch/" itemprop="url">pytorch</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-06-26T20:14:02+08:00">
+                2019-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  750
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="pytorch"><a href="#pytorch" class="headerlink" title="pytorch"></a>pytorch</h1><h2 id="什么时候共享内存？"><a href="#什么时候共享内存？" class="headerlink" title="什么时候共享内存？"></a>什么时候共享内存？</h2><h2 id="pytorch的数据加载机制"><a href="#pytorch的数据加载机制" class="headerlink" title="pytorch的数据加载机制"></a>pytorch的数据加载机制</h2><p>《笔记本A》 p-4<br>参考：<a href="https://pytorch.org/docs/stable/data.html#module-torch.utils.data" target="_blank" rel="noopener">官网 文档</a>, <a href="https://blog.csdn.net/u012436149/article/details/78545766" target="_blank" rel="noopener">pytorch学习笔记（十四）： DataLoader源码阅读</a></p>
+<h3 id="整体流程"><a href="#整体流程" class="headerlink" title="整体流程"></a>整体流程</h3><p>数据加载模块核心的数据抽象是<a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" target="_blank" rel="noopener"><code>DataLoader</code></a>,  一般构造如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data_loader = DataLoader(dataset, batch_size=1, shuffle=False)</span><br></pre></td></tr></table></figure>
+<p>在<code>DataLoader</code>的构造函数中，会创建一个采样器（实际上是两个，一个<code>batch_sampler</code>, 一个基采样器，比如<code>RandomSampler</code>）。数据加载器典型的用法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">for ep in range(epoches):</span><br><span class="line">	for x, y in data_loader:</span><br><span class="line">		out = model.forward(x)</span><br></pre></td></tr></table></figure>
+<p><strong><code>data_loader</code>是一个可迭代对象</strong>，根据<code>for</code>语句的执行机制，首先会调用可迭代对象的<code>__iter__()</code>函数得到一个<strong>迭代器<code>DataLoaderIter</code></strong>，然后不断地调用迭代器的<code>__next__()</code>来循环。记住<code>data_loader</code>是一个可迭代对象而不是迭代器，所以可以不断地循环。</p>
+<p>这里有一个问题，<strong>怎么保证每个epoch的迭代不一样？</strong>这就要说到采样器<code>Sampler</code>，前面提到采样器是在<code>DataLoader</code>的构造函数中被初始化的，<strong>采样器<code>Sampler</code>也是一个可迭代对象</strong>。上一段说到，在执行<code>for</code>的时候，会调用数据加载器<code>data_loader</code>的<code>__iter__()</code>函数得到迭代器<code>DataLoaderIter</code>， 而<strong>在<code>DataLoaderIter</code>的构造函数中会调用采样器<code>sampler</code>的<code>__iter__()</code>函数得到采样迭代器</strong>，shuffle操作是放在<code>sampler</code>的<code>__iter__()</code>函数中完成的。这样设计就是在一个epoch内，有一个数据加载迭代器和一个采样迭代器，初始化数据迭代器的时候会初始化采样迭代器，构造采样迭代器的时候会扰乱一下索引列表，从而每个epoch跌打的数据顺序是不同的。当然只有<code>RandomSampler</code>会打乱索引列表，<code>SquentialSampler</code>每个epoch都是结果都是一样的，采样器的内部机制在下一节介绍。</p>
+<h3 id="采样器"><a href="#采样器" class="headerlink" title="采样器"></a>采样器</h3><p>采样器可以自定义，但pytorch 预定义了几个采样器，通常都是用预定义的采样器就够了。常用的有下面两个：<code>RandomSampler</code>, <code>SquentialSampler</code>。 下面是<code>SquentialSampler</code>的定义，没错，就是这么几行；<code>RandomSampler</code>也差不多，只不过在12行的<code>__iter__()</code>函数体中把索引列表打乱了一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class SequentialSampler(Sampler):</span><br><span class="line">    r&quot;&quot;&quot;Samples elements sequentially, always in the same order.</span><br><span class="line"></span><br><span class="line">    Arguments:</span><br><span class="line">        data_source (Dataset): dataset to sample from</span><br><span class="line">    &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self, data_source):</span><br><span class="line">        self.data_source = data_source</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return iter(range(len(self.data_source)))</span><br><span class="line"></span><br><span class="line">    def __len__(self):</span><br><span class="line">        return len(self.data_source)</span><br></pre></td></tr></table></figure>
+<p>上面两个采样器的迭代器每次只会抛出一个索引，为了 方便得到一批索引，又在其上封装了<code>BatchSampler</code>类，只要参数<code>batch_size &gt; 1</code>, 就会使用<code>BatchSampler</code>。</p>
+<p>参数<code>shuffle</code>用来指定我们要用哪个预定义采样器。从下面代码中的6-9行可以看出来，<code>shuffle=True</code>其实就是选择了 <code>RandomSampler</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> sampler <span class="keyword">is</span> <span class="literal">None</span>:  <span class="comment"># give default samplers</span></span><br><span class="line">	<span class="keyword">if</span> self.dataset_kind == _DatasetKind.Iterable:</span><br><span class="line">		<span class="comment"># See NOTE [ Custom Samplers and IterableDataset ]</span></span><br><span class="line">		sampler = _InfiniteConstantSampler()</span><br><span class="line">	<span class="keyword">else</span>:  <span class="comment"># map-style</span></span><br><span class="line">		<span class="keyword">if</span> shuffle:</span><br><span class="line">			sampler = RandomSampler(dataset)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			sampler = SequentialSampler(dataset)</span><br><span class="line">			</span><br><span class="line"><span class="keyword">if</span> batch_size <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> batch_sampler <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="comment"># auto_collation without custom batch_sampler</span></span><br><span class="line">	batch_sampler = BatchSampler(sampler, batch_size, drop_last)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/06/21/评价指标/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1250,7 +1400,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1338,7 +1488,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共5.1k字</span>
+  <span class="post-count">博客全站共5.8k字</span>
 </div>
 
         
