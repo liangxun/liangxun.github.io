@@ -515,41 +515,25 @@
             <p>不同任务的评价指标不一样，每个指标都有其适用的场景。</p>
 <h2 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h2><h3 id="二分类"><a href="#二分类" class="headerlink" title="二分类"></a>二分类</h3><p><strong>混淆矩阵(confusion matrix)</strong>是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，<strong>行代表真实情况，列表示预测情况</strong>。P表示Positive(正例)，N表示Negtive(负例)；以<strong>TP</strong>为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(True)/False).<br><img src="/2019/06/21/评价指标/confusion_matrix.svg" alt="混淆矩阵">  </p>
 <p>基于混淆矩阵定义的指标有两个阵营：</p>
-<p>第一个阵营的评价指标是偏向于关注positive类, 包括Precision, Recall以及F1.</p>
-<p><strong>精确率(Precision)</strong>：$P=\frac{TP}{TP+FP}$ . 表示在所有<em>预测为</em>P的样本中，有多少<em>真的是</em>P<br><strong>召回率(Recall)</strong>: $R=\frac{TP}{TP+FN}$ . 表示真正为P的样本中，有多少被检测出来<br>（在恶意检测场景下，通常我们把恶意样本称为正例，把正常样本称为负例）<br><strong>F1-Score</strong>: $F1 = \frac{2 \times P \times R}{P + R}$. F1值定义为召回率和精确率调和平均的2倍（之所以2倍是为了让F1的值域为$[0-1]$）。F1为什么使用调和平均而不是算术平均？调和平均强调了较小值得重要性，比如当召回率接近0，精确率接近1，这其实是很 糟糕的情况，算术平均是0.5， 而调和平均接近0。</p>
-<p>第二个阵营的评价指标没有说是更关注某一个类。这个阵营可以划分两个更小的部分，</p>
-<p>第一部分是accuracy</p>
-<p><strong>准确率(accuracy)</strong>: $acc = \frac{TP + TN}{ TP + TN + FP +FN} = \frac{T}{T+F}$</p>
-<p>第二部分是ROC相关的一些指标</p>
-<p>真正例率(True Positive Rate, TPR): $TPR = \frac{TP}{TP+FN}$    TPR是越高越好<br>假正例率(False Positive Rate, FPR): $FPR = \frac{FP}{FP + TN}$   FPR是越低越好</p>
-<p>注意到TPR和FPR的分母是某一行加起来，所以说TPR是从positive类的视角来评价，FPR是从negative类的视角来评价。因此TPR和FPR一起来评价模型的话就是平等对待所有的类。</p>
-<p>虽然这些指标都是定义在混淆矩阵上，但是如果我们把分类的阈值调整的话，混淆矩阵是会变的。比如说模型的输出是预测概率，一般情况概率大于0.5判断为正类，概率小于0.5判断为负类；但是如果我们把阈值定位0.4的话，混淆矩阵就会变动了。参考《机器学习》p33 对为什么引入ROC的意义说得很清楚，能从排序本身的质量好坏来评价。我们通过调整阈值，得到不同的混淆矩阵，进而得到不同的(fpr, tpr)，【这里注意下虽然其他指标都会随着混淆矩阵的变动而改变，但是通常我们从TPR和FPR来考虑ROC曲线，比如Precision-Recall曲线也是存在的，但是好像没见过哪里会使用过】。 在得到ROC的时候，通常会把fpr和tpr用小写。</p>
-<p><strong>ROC曲线(Receiver Operating Characteristic Curve)</strong>就指的是以fpr为横轴，tpr为纵轴得到的一个曲线。</p>
-<p><strong>AUC(Aera Under Curve)</strong>则表示ROC曲线之下的面积。area under curve好像是在泛指曲线下的面积，但是默认情况下它就是说的area under ROC curve。</p>
-<p>很多时候我们把TPR, FPR，ROC，AUC这些都统称为ROC相关指标。</p>
-<p><strong>问题1：F1-score和accuracy的区别？</strong></p>
-<p>从定义式可以看出准确率只关注正确与否，对真实情况中的每个类都一视同仁；而F1值以精确率和召回率为基础，精确率和召回率都是围绕着TP，所以F1的关注对象是正类这一个类。比如说，二分类问题的两个类分别是A和B，我们可以为A类计算F1值(或召回率、精确率)，也可以给B类计算F1值(或召回率、精确率)；准确率则不存在说是给某个类计算的，它是一个整体的标准。</p>
-<p>适用场景：如果每个类都同等重要，那么可以选用ACC，ACC计算也简单，比如在图像分类中ACC就用得多；如果我们更关注某个类或者存在数据不平衡的情况下，用F1值较好，在异常检测等场景用F1就比较多。<br>举例说明：有如下混淆矩阵</p>
+<p>第一个阵营的评价指标是偏向于关注positive类, 包括Precision, Recall以及F1.<br><strong>精确率(Precision)</strong>：$P=\frac{TP}{TP+FP}$ . 表示在所有<em>预测为</em>P的样本中，有多少<em>真的是</em>P<br><strong>召回率(Recall)</strong>: $R=\frac{TP}{TP+FN}$ . 表示真正为P的样本中，有多少被检测出来<br>（在恶意检测场景下，通常我们把恶意样本称为正例，把正常样本称为负例）<br><strong>F1-Score</strong>: $F1 = \frac{2 \times P \times R}{P + R}$. F1值定义为召回率和精确率调和平均的2倍（之所以2倍是为了让F1的值域为$[0-1]$）。F1为什么使用调和平均而不是算术平均？调和平均强调了较小值得重要性，比如当召回率接近0，精确率接近1，这其实是很 糟糕的情况，算术平均是0.5， 而调和平均接近0。</p>
+<p>第二个阵营的评价指标没有说是更关注某一个类。这个阵营可以划分两个更小的部分，<br>第一部分是accuracy<br><strong>准确率(accuracy)</strong>: $acc = \frac{TP + TN}{ TP + TN + FP +FN} = \frac{T}{T+F}$</p>
+<p>第二部分是ROC相关的一些指标<br><strong>真正例率(True Positive Rate, TPR)</strong>: $TPR = \frac{TP}{TP+FN}$    TPR是越高越好<br><strong>假正例率(False Positive Rate, FPR)</strong>: $FPR = \frac{FP}{FP + TN}$   FPR是越低越好<br>注意到TPR和FPR的分母是某一行加起来，所以说TPR是从positive类的视角来评价，FPR是从negative类的视角来评价。因此TPR和FPR一起来评价模型的话就是平等对待所有的类。<br>虽然这些指标都是定义在混淆矩阵上，但是如果我们把分类的阈值调整的话，混淆矩阵是会变的。比如说模型的输出是预测概率，一般情况概率大于0.5判断为正类，概率小于0.5判断为负类；但是如果我们把阈值定位0.4的话，混淆矩阵就会变动了。参考《机器学习》p33 对为什么引入ROC的意义说得很清楚，能从排序本身的质量好坏来评价。我们通过调整阈值，得到不同的混淆矩阵，进而得到不同的(fpr, tpr)，【这里注意下虽然其他指标都会随着混淆矩阵的变动而改变，但是通常我们从TPR和FPR来考虑ROC曲线，比如Precision-Recall曲线也是存在的，但是好像没见过哪里会使用过】。 在得到ROC的时候，通常会把fpr和tpr用小写。<br><strong>ROC曲线(Receiver Operating Characteristic Curve)</strong>就指的是以fpr为横轴，tpr为纵轴得到的一个曲线。<br><strong>AUC(Aera Under Curve)</strong>则表示ROC曲线之下的面积。area under curve好像是在泛指曲线下的面积，但是默认情况下它就是说的area under ROC curve。<br>很多时候我们把TPR, FPR，ROC，AUC这些都统称为ROC相关指标。</p>
+<p><strong>问题1：F1-score和accuracy的区别？</strong><br>从定义式可以看出准确率只关注正确与否，对真实情况中的每个类都一视同仁；而F1值以精确率和召回率为基础，精确率和召回率都是围绕着TP，所以F1的关注对象是正类这一个类。比如说，二分类问题的两个类分别是A和B，我们可以为A类计算F1值(或召回率、精确率)，也可以给B类计算F1值(或召回率、精确率)；准确率则不存在说是给某个类计算的，它是一个整体的标准。<br>适用场景：如果每个类都同等重要，那么可以选用ACC，ACC计算也简单，比如在图像分类中ACC就用得多；如果我们更关注某个类或者存在数据不平衡的情况下，用F1值较好，在异常检测等场景用F1就比较多。<br>举例说明：有如下混淆矩阵</p>
 <script type="math/tex; mode=display">
 \begin{matrix}
 5 & 5 \\
 5 & 995
-\end{matrix}</script><p>明显数据不平衡，这在异常检测中很常见，把异常定义为正例，那异常样本的数量本来就少。这个混淆矩阵算出来$acc= \frac{1000}{1010} = 0.99$，简直不要太好；而$recall = 0.5, precision = 0.5, F1 = 0.5$。 显然这种情况用F1会更合适。  </p>
-<p>但是ROC这帮指标不单单指考虑正类，并且不会因为数据不平衡造成误差。对上面的混淆矩阵$TPR = 0.5, FPR = 0.005$， 这个结果是TPR很差，但是FPR很好，这个评价是很恰当的。</p>
+\end{matrix}</script><p>明显数据不平衡，这在异常检测中很常见，把异常定义为正例，那异常样本的数量本来就少。这个混淆矩阵算出来$acc= \frac{1000}{1010} = 0.99$，简直不要太好；而$recall = 0.5, precision = 0.5, F1 = 0.5$。 显然这种情况用F1会更合适。<br>但是ROC这帮指标不单单指考虑正类，并且不会因为数据不平衡造成误差。对上面的混淆矩阵$TPR = 0.5, FPR = 0.005$， 这个结果是TPR很差，但是FPR很好，这个评价是很恰当的。</p>
 <p><strong>问题2：Pricision, Recall 和 TPR, FPR 几个术语的区分？使用场景？</strong>：</p>
 <ol>
-<li>术语区分</li>
-</ol>
-<ul>
+<li>术语区分  <ul>
 <li>Recall和TPR的定义完全一样，是一个意思；</li>
 <li>Recall(TPR), FPR是从行的角度统计，分母是某一行加起来，分子是该行中的特定列；</li>
 <li>Pricision是从列的角度统计，分母是第一列加起来，分子是该列的第一行；</li>
 <li>Pricision和Recall以及F1通常一起出现；TPR和FPR以及ROC常常一块出现。</li>
 </ul>
-<ol>
-<li><p>从定义可以看出，精确率和召回率都是围绕着TP，其关注对象是正类这一个类。真正例率TPR, 假正例率FPR则分别关注正类和负类，所以所TPR和FPR相对来说更是一个整体的指标，和acc类似。但是TPR和FPR并且不会因为数据不平衡造成误差。对问题1中的混淆矩阵$TPR = 0.5, FPR = 0.005$， 这个结果是TPR很差，但是FPR很好，这个评价是很恰当的。</p>
-<p>适用场景，如果更加关注正类，那么用recall+precision；如果每个类都重要，那么考虑用TPR+FPR. 如果说要从排序本身质量来评价的话，选后者计算AUC随最合适的，所以很多比赛的评价都是AUC，但其实没必要追求这么好。</p>
 </li>
+<li>从定义可以看出，精确率和召回率都是围绕着TP，其关注对象是正类这一个类。真正例率TPR, 假正例率FPR则分别关注正类和负类，所以所TPR和FPR相对来说更是一个整体的指标，和acc类似。但是TPR和FPR并且不会因为数据不平衡造成误差。对问题1中的混淆矩阵$TPR = 0.5, FPR = 0.005$， 这个结果是TPR很差，但是FPR很好，这个评价是很恰当的。<br>适用场景，如果更加关注正类，那么用recall+precision；如果每个类都重要，那么考虑用TPR+FPR. 如果说要从排序本身质量来评价的话，选后者计算AUC随最合适的，所以很多比赛的评价都是AUC，但其实没必要追求这么好。</li>
 </ol>
 <h3 id="多分类"><a href="#多分类" class="headerlink" title="多分类"></a>多分类</h3><p>虽然F1可以推广到多分类的情况（macro-F1或者micro-F1），但是这样用的很少；因为既然是多分类，那么一般来说每个类都同等重要，很少有数据不平衡的现象。对于多分类问题直接用准确率最好，计算简单。有些论文里面会用错误率， 错误率 = 1 - 准确率.</p>
 <h2 id="回归任务"><a href="#回归任务" class="headerlink" title="回归任务"></a>回归任务</h2><h2 id="无监督任务"><a href="#无监督任务" class="headerlink" title="无监督任务"></a>无监督任务</h2>
