@@ -1124,7 +1124,7 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
                   <span class="post-meta-item-text">Words count in article&#58;</span>
                 
                 <span title="Words count in article">
-                  627
+                  2k
                 </span>
               
 
@@ -1151,37 +1151,76 @@ p_{poster}(\theta) = \frac{p(x_1,...,x_m | \theta) p_{prior}(\theta)}{p(x_1,...,
       
         
           
-            <h1 id="svm"><a href="#svm" class="headerlink" title="svm"></a>svm</h1><p>SVM的基本问题是<br>给定数据集</p>
+            <p>SVM的基本问题是有监督二分类。给定数据集</p>
 <script type="math/tex; mode=display">
 T = \{(x_1,y_1),(x_2,y_2),···,(x_n,y_n)\}, y_i \in \{+1,-1\}</script><p>我们的目标是要找到一个分类判决函数 $ f(x) $ </p>
 <script type="math/tex; mode=display">
-f(x)=sign(wx+b)</script><p>需要做的事情就是确定参数$w$和$b$。</p>
-<p>注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第一步用将训练数据从线性不可分空间映射到线性可分空间（核函数隐式表征的希尔伯特空间），第二步在线性可分空间中使用SVM。所以严格来说SVM是作用在线性可分空间中的，这里只介绍SVM，关于核函数在另一篇中介绍。<br>很容易构造优化问题</p>
+f(x)=sign(\mathbf w \mathbf x+b)</script><p>需要做的事情就是确定参数$w$和$b$。</p>
+<p>注意SVM并非一定要使用核函数，只不过现实中数据一般都是非线性可分的，所以都使用带核函数的SVM，分解来看就是第一步用将训练数据从线性不可分空间映射到线性可分空间（核函数隐式表征的希尔伯特空间），第二步在线性可分空间中使用SVM。所以严格来说SVM是作用在线性可分空间中的，这里只介绍SVM，关于核函数在另一篇中详细介绍。</p>
+<p>为了确定参数$w$和$b$，我们可以<strong>构造优化问题</strong></p>
 <script type="math/tex; mode=display">
-\min \limits_{w,b} \frac{1}{2}||w||^2  \\
-s.t. \quad y_i(w^T x_i + b) \geq 1, i=1,2,...,n</script><p>解释：<strong>优化目标一句话概括是让间隔margin最大化</strong>，知道<em>支持向量</em>和<em>分类平面</em>两个术语后，容易得出margin就是$\frac{2}{||w||}$,而最大化$\frac{2}{||w||}$和最小化$\frac{1}{2}||w||^2​$的结果是一样的<br>通过拉格朗日乘子法<sup><a href="#fn_1" id="reffn_1">1</a></sup>可以将原始问<strong>转换成到对偶问题</strong></p>
+\min \limits_{w,b} \frac{1}{2}||w||^2  \\s.t. \quad y_i(w^T x_i + b) \geq 1, i=1,2,...,n</script><p>解释：<strong><em>优化目标一句话概括是让间隔margin最大化</em></strong>，知道<em>支持向量</em>和<em>分类平面</em>两个术语后，容易得出margin就是$\frac{2}{||w||}$,而最大化$\frac{2}{||w||}$和最小化$\frac{1}{2}||w||^2$的结果是一样的（前面的$\frac{1}{2}$是约定成俗，反正不影响最后结果）。参考：《机器学习》p122介绍问题引入部分讲得非常好。<br>通过拉格朗日乘子法<sup><a href="#fn_1" id="reffn_1">1</a></sup>可以将原始问<strong>转换成到对偶问题</strong></p>
 <script type="math/tex; mode=display">
 \min \limits_{\alpha} \frac{1}{2} \sum_{i=1}^n \sum_{j=1}^n \alpha_i \alpha_j y_i y_j (x_i x_j) - \sum_{i=1}^n \alpha_i \\
 \begin{align}
 s.t. 
 & \sum_{i=1}^n \alpha_i y_i = 0 \\
 & \alpha_i \geq 0, \;i=1,2,···,n.
-\end{align}</script><p>解释：每个样本对应一个$\alpha_i$，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$</p>
-<p>接下来考虑怎么求解$\alpha$<br>最经典的是<strong>使用SMO算法求解$\alpha$</strong>。这部分可以参考<a href="http://open.163.com/movie/2008/1/9/3/M6SGF6VB4_M6SGJVA93.html" target="_blank" rel="noopener">网易公开课-机器学习-吴恩达-SMO</a>（视频从45min开始介绍用SMO求解$\alpha​$），讲解得很清楚</p>
-<p>SMO求解过程如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repeat&#123;</span><br><span class="line">第一步：select  $α_i,α_j  $ </span><br><span class="line">第二步：optim $ W(α)   w.r.t α_i,α_j s.t. 限制条件$ </span><br><span class="line">&#125;直到收敛</span><br></pre></td></tr></table></figure></p>
-<p>解释：第一步启发式地选择两个参数$\alpha_i,\alpha_j$。第二步因为实际上$\alpha_j$可以用$\alpha_i$表示，实际上只有一个自变量$\alpha_i$，而且$W(\alpha_i)$是一个二次函数。</p>
-<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
-<li><p>如何理解高斯核函数RBF</p>
+\end{align}</script><p>解释：<strong><em>每个样本对应一个$\alpha_i$</em></strong>，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$。</p>
 <script type="math/tex; mode=display">
-K(x, z) = exp(-\frac{||x-z||^2}{2 \alpha^2}), \delta 为高斯核的带宽(width)</script></li>
+\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x + b</script><p>上面可以看到只有 $\alpha_i &gt; 0$ 对应的那些样本才会对$\sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x$ 这个部分有贡献，所以说 $\alpha_i &gt; 0$ 对应的 $\mathbf x_i$就是支持向量。根据上面的公式，其实可以计算出固定的 $\mathbf w = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T$</p>
+<p><strong>问题：SVM的优化算法学习的结果到底是什么？</strong></p>
+<p>注意并没有直接给出$\mathbf w$，因为在考虑kernel的情况下，完整的公式为</p>
+<script type="math/tex; mode=display">
+\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i K(\mathbf x_i^T \mathbf x) + b</script><p>所以说像<code>sklearn</code>训练完SVM模型后，保存下来的是支持向量，$\alpha$ 和截距$b$.</p>
+<p>接下来考虑怎么求解$\alpha$<br>最经典的是使用<strong>SMO算法求解$\alpha$</strong>。这部分可以参考<a href="http://open.163.com/movie/2008/1/9/3/M6SGF6VB4_M6SGJVA93.html" target="_blank" rel="noopener">网易公开课-机器学习-吴恩达-SMO</a>（视频从45min开始介绍用SMO求解$\alpha$），讲解得很清楚</p>
+<p>SMO求解过程如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repeat&#123;</span><br><span class="line">第一步：select  $α_i,α_j  $ </span><br><span class="line">第二步：optim $ W(α)   w.r.t α_i,α_j s.t. 限制条件$ </span><br><span class="line">&#125;直到收敛</span><br></pre></td></tr></table></figure>
+<p>解释：第一 步启发式地选择两个参数$\alpha_i,\alpha_j$。第二步因为实际上$\alpha_j$可以用$\alpha_i$表示，实际上只有一个自变量$\alpha_i$，而且$W(\alpha_i)$是一个二次函数。 SMO算法是属于坐标下降法，坐标下降法在优化算法那一篇中介绍。</p>
+<h2 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h2><p><strong>问题1：如何理解kernel？</strong></p>
+<p>核函数$K(x, z)$其实是<strong><em>在度量样本$x$和样本$z$之间相似性</em></strong>。</p>
+<p>常用的核函数有一下几种：</p>
+<ol>
+<li><p>高斯核函数RBF</p>
+<script type="math/tex; mode=display">
+K(x, z) = exp(-\frac{||x-z||^2}{2\delta^2})， \delta 为高斯核的带宽(width)</script><p>如果我们把$x-z$看做一个距离变量$d$，并且忽略高斯分布的归一化部分，则高斯核可以写成</p>
+<script type="math/tex; mode=display">
+K(x,z) = \mathcal N(x-z; 0, \delta^2I) = \mathcal N(d; 0, \delta^2I)</script><p>这能更直地的看出高斯核其实就是以距离$d$为变量的高斯分布($\mu=0$, $\delta$人工指定)。所以当$x$和$z$的欧几里得距离很小时，对应的高斯核响应很大。</p>
+</li>
 <li><p>线性核</p>
 <script type="math/tex; mode=display">
-K(x, z) = x^T  z</script></li>
+K(x, z) = x^T  z</script><p>用线性核其实就跟不用核函数是一样的，在svm中算是鸡肋。这里把 $x^T  z$ 看作是两者之间的相似度度量，在Word2vec的训练中其实就是用的这个内积来度量两个单词的相似性。</p>
+</li>
 <li><p>多项式核</p>
 <script type="math/tex; mode=display">
-K(x, z) = {(x^Tz)}^d, d >1为多项式的次数</script></li>
+K(x, z) = {(x^Tz)}^d,  d >1为多项式的次数</script></li>
 </ol>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><blockquote id="fn_1">
+<p>给定核函数，其实会通过在样本两两之间得到一个相似度的输出。假设数据集中一共有$n$个样本，所以最后得到的会是一个$n \times n$维的矩阵, 通常称之为<strong>核矩阵</strong>。其实，如果我们有自定义的衡量样本之间相似度的方法（比如说网络节点之间用边的权重直接就是节点间相似度了），其实可以直接给出核矩阵。 特别注意核矩阵是半正定矩阵，既然每个元素都是相似度，那么相似度应该是要$\geq 0$的。</p>
+<p><strong>问题2：为什么说kernel是在升维？解决了非线性可分的问题</strong></p>
+<h2 id="sklearn-svm"><a href="#sklearn-svm" class="headerlink" title="sklearn.svm"></a><a href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.svm" target="_blank" rel="noopener">sklearn.svm</a></h2><p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn-svm-svc" target="_blank" rel="noopener"><code>sklearn.svm.SVC</code></a>的底层实现是<code>libsvm</code>；<a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html#sklearn.svm.LinearSVC" target="_blank" rel="noopener"><code>sklearn.svm.LinearSVC</code></a>的底层实现是<code>liblinear</code>，对数据量大的时候支持会好一点，但是不支持kernel。一般来说前者用得多些，因为加kernel的效果基本上都会更好。</p>
+<p>在sklearn.svm中，把分类和回归分开的，回归对应的是<code>sklearn.svm.SVR</code></p>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><p>下面的代码展示了<code>sklearn.svm</code>的基本用法以及学习到的结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.svm <span class="keyword">import</span> SVC</span><br><span class="line"></span><br><span class="line"><span class="comment">#构造数据集：前三个点和后三个点是关于直线 x+y=5 对称的</span></span><br><span class="line">x = np.array([[<span class="number">1</span>,<span class="number">1</span>],[<span class="number">1</span>,<span class="number">3</span>],[<span class="number">3</span>,<span class="number">1</span>], [<span class="number">4</span>,<span class="number">4</span>],[<span class="number">4</span>,<span class="number">2</span>],[<span class="number">2</span>,<span class="number">4</span>]])</span><br><span class="line">y = np.array([<span class="number">-1</span>, <span class="number">-1</span>, <span class="number">-1</span>,  <span class="number">1</span>,  <span class="number">1</span>,  <span class="number">1</span>])</span><br><span class="line"></span><br><span class="line">clf = SVC(kernel=<span class="string">'linear'</span>)</span><br><span class="line">clf.fit(x,y)</span><br><span class="line">clf.predict([[<span class="number">0</span>,<span class="number">0</span>]])</span><br><span class="line"></span><br><span class="line">clf.support_vectors_ </span><br><span class="line"><span class="string">""" 支持向量</span></span><br><span class="line"><span class="string">array([[2., 2.],</span></span><br><span class="line"><span class="string">       [3., 3.]])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">clf.dual_coef_</span><br><span class="line"><span class="string">""" $\alpha$</span></span><br><span class="line"><span class="string">array([[-1.,  1.]])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">clf.intercept_</span><br><span class="line"><span class="string">""" 截距 $b$</span></span><br><span class="line"><span class="string">array([-5.])</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意，因为kernel='linear'，所以能够计算出固定的w来。对于其他情况（比如说kernel=‘rbf’）是没有这个属性的. </span></span><br><span class="line">clf.coef_ </span><br><span class="line"><span class="string">""" 权值 $w$</span></span><br><span class="line"><span class="string">array([[1., 1.]])</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<h3 id="超参数说明"><a href="#超参数说明" class="headerlink" title="超参数说明"></a>超参数说明</h3><p>超参数的设置，这个可以参考函数定义<a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC" target="_blank" rel="noopener"><code>sklearn.svm.SVC(C=1.0, kernel=’rbf’)</code></a></p>
+<p>参考blog： <a href="https://xijunlee.github.io/2017/03/29/sklearn%E4%B8%ADSVM%E8%B0%83%E5%8F%82%E8%AF%B4%E6%98%8E%E5%8F%8A%E7%BB%8F%E9%AA%8C%E6%80%BB%E7%BB%93" target="_blank" rel="noopener">sklearn中SVM调参说明及经验总结</a></p>
+<p>主要考虑几个方面的超参数：</p>
+<ol>
+<li><p>指定kernel函数。</p>
+<p>首先是指定用哪种kernel，其次要设置kernel的参数。注意sklearn是按照libsvm文献里面的kernel公式，通常书本上说的是简化形式。</p>
+<p>线性核：<code>kernel=&#39;linear&#39;</code></p>
+<p>多项式核：<code>kernel=&#39;poly&#39;</code>,  需要指定多项式的次数$d$: <code>degree=3</code>，也可以指定<code>gamma</code>和<code>coef0</code>,  因为libsvm中公式为$k(x,z) = (\gamma x^T z + r)^d$更完整</p>
+<p>高斯核：<code>kernel=&#39;rbf&#39;</code>,  需要指定带宽<code>gamma=1e-3</code>（默认<code>gamma</code>等于$\frac{1}{特征个数}$）, 注意这里 $\gamma = \frac{1}{2\delta^2}$, 有些文献里面高斯核公式里面用的$\gamma$而不是$\delta$，其实是一个意思，都是用来限制带宽。$\gamma$越大，$\delta$越小，带宽越小，支持向量的作用范围越小，（？？最后得到的支持向量个数越少？？）</p>
+</li>
+<li><p>指定对软间隔错误损失的容忍度$C$.  <code>C=1e-3</code></p>
+<p>参考《机器学习》p130.</p>
+<p>优化目标：$\min \limits_{w,b} \frac{1}{2}||w||^2 + C \sum^n_{i=1} loss(f(\mathbf x_i), y_i)$</p>
+<p>注意上面的公式调节正则化项和经验风险的系数$C$是放在经验风险这一项的</p>
+<p>在设计损失函数更多时候是 $损失函数 = 经验风险 + \lambda 正则化项$</p>
+</li>
+<li><p>控制训练的过程。比如说迭代次数，内存占用等一般不需要不需要调节</p>
+</li>
+</ol>
+<blockquote id="fn_1">
 <sup>1</sup>. 参考《统计学习方法》p225<a href="#reffn_1" title="Jump back to footnote [1] in the text."> &#8617;</a>
 </blockquote>
 
@@ -1509,7 +1548,7 @@ loss_{log}(z) = log(1 + exp(-z))</script><h2 id="回归类任务的损失函数"
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共7k字</span>
+  <span class="post-count">博客全站共8.3k字</span>
 </div>
 
         
