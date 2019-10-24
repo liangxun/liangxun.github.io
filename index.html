@@ -1168,15 +1168,15 @@ s.t.
 & \alpha_i \geq 0, \;i=1,2,···,n.
 \end{align}</script><p>解释：<strong><em>每个样本对应一个$\alpha_i$</em></strong>，只要求出了$\alpha$，我们就可以通过$\alpha$确定$w$和$b$。</p>
 <script type="math/tex; mode=display">
-\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x + b</script><p>上面可以看到只有 $\alpha_i &gt; 0$ 对应的那些样本才会对$\sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x$ 这个部分有贡献，所以说 $\alpha_i &gt; 0$ 对应的 $\mathbf x_i$就是支持向量。根据上面的公式，其实可以计算出固定的 $\mathbf w = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T$</p>
-<p><strong>问题：SVM的优化算法学习的结果到底是什么？</strong></p>
-<p>注意并没有直接给出$\mathbf w$，因为在考虑kernel的情况下，完整的公式为</p>
-<script type="math/tex; mode=display">
-\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i K(\mathbf x_i^T \mathbf x) + b</script><p>所以说像<code>sklearn</code>训练完SVM模型后，保存下来的是支持向量，$\alpha$ 和截距$b$.</p>
+\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x + b</script><p>上面可以看到只有 $\alpha_i &gt; 0$ 对应的那些样本才会对$\sum^m_{i=1} \alpha_i y_i \mathbf x_i^T \mathbf x$ 这个部分有贡献，所以说 $\alpha_i &gt; 0$ 对应的 $\mathbf x_i$就是支持向量。根据上面的公式，其实可以计算出固定的 $\mathbf w = \sum^m_{i=1} \alpha_i y_i \mathbf x_i^T$，注意考虑核函数的话就不能这样得到固定的$\mathbf w$了。</p>
 <p>接下来考虑怎么求解$\alpha$<br>最经典的是使用<strong>SMO算法求解$\alpha$</strong>。这部分可以参考<a href="http://open.163.com/movie/2008/1/9/3/M6SGF6VB4_M6SGJVA93.html" target="_blank" rel="noopener">网易公开课-机器学习-吴恩达-SMO</a>（视频从45min开始介绍用SMO求解$\alpha$），讲解得很清楚</p>
 <p>SMO求解过程如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">repeat&#123;</span><br><span class="line">第一步：select  $α_i,α_j  $ </span><br><span class="line">第二步：optim $ W(α)   w.r.t α_i,α_j s.t. 限制条件$ </span><br><span class="line">&#125;直到收敛</span><br></pre></td></tr></table></figure>
 <p>解释：第一 步启发式地选择两个参数$\alpha_i,\alpha_j$。第二步因为实际上$\alpha_j$可以用$\alpha_i$表示，实际上只有一个自变量$\alpha_i$，而且$W(\alpha_i)$是一个二次函数。 SMO算法是属于坐标下降法，坐标下降法在优化算法那一篇中介绍。</p>
+<p><strong>问题：SVM的优化算法学习的结果到底是什么？</strong></p>
+<p>注意并没有直接给出$\mathbf w$，因为在考虑kernel的情况下，完整的公式为</p>
+<script type="math/tex; mode=display">
+\mathbf w \mathbf x + b = \sum^m_{i=1} \alpha_i y_i K(\mathbf x_i^T \mathbf x) + b</script><p>所以说像<code>sklearn</code>训练完SVM模型后，保存下来的是支持向量，$\alpha$ 和截距$b$.</p>
 <h2 id="核函数"><a href="#核函数" class="headerlink" title="核函数"></a>核函数</h2><p><strong>问题1：如何理解kernel？</strong></p>
 <p>核函数$K(x, z)$其实是<strong><em>在度量样本$x$和样本$z$之间相似性</em></strong>。</p>
 <p>常用的核函数有一下几种：</p>
