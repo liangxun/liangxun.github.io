@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-loading-bar.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Android Security,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+<meta name="keywords" content="Android Security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Androguard">
+<meta property="og:url" content="https://liangxun.github.io/2019/11/28/Androguard/index.html">
+<meta property="og:site_name" content="liangxun blog">
+<meta property="og:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-11-28T09:04:52.489Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Androguard">
+<meta name="twitter:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liangxun.github.io/2019/11/28/Androguard/">
+
+
+
+
+
+  <title>Androguard | liangxun blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <a href="https://github.com/liangxun"><img style="position: absolute; top: 0; right: 0; border: 0;" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_red_aa0000.png?resize=149%2C149" alt="Fork me on GitHub" data-recalc-dims="1"></a>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liangxun blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liangxun.github.io/2019/11/28/Androguard/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liangxun Li">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liangxun blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Androguard</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-11-28T16:43:20+08:00">
+                2019-11-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Words count in article&#58;</span>
+                
+                <span title="Words count in article">
+                  1.4k
+                </span>
+              
+
+              
+
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a href="https://github.com/androguard/androguard" target="_blank" rel="noopener">Github</a>, <a href="https://androguard.readthedocs.io/" target="_blank" rel="noopener">Doc</a><br>参考：<a href="https://blog.csdn.net/ybdesire/article/details/52629142" target="_blank" rel="noopener">详解Androguard静态分析APK方法</a><br>基本用法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> androguard.misc <span class="keyword">import</span> AnalyzeAPK</span><br><span class="line">a, d, dx = AnalyzeAPK(<span class="string">"xxx.apk"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""line2等价于</span></span><br><span class="line"><span class="string">a = APK("xxx.apk")</span></span><br><span class="line"><span class="string">d = DalvikVMFormate(a.get_dex())</span></span><br><span class="line"><span class="string">dx = VMAnalysis(d)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure></p>
+<p><code>a</code>是apk文件对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/bytecodes/apk.py" target="_blank" rel="noopener">定义源码</a>.  通过apk文件对象，可以获取APK级别的一些整体信息，比如<code>androidmanifest.xml</code>中的申明，文件个数，签名信息等等<br><code>d</code>是dex文件对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/bytecodes/dvm.py" target="_blank" rel="noopener">定义源码</a>。（注意下，在新版本中<code>d</code>是list，这个list中的每个元素是dex文件对<br><code>dx</code>的dex的分析结果对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/analysis/analysis.py" target="_blank" rel="noopener">定义源码</a></p>
+<h2 id="a"><a href="#a" class="headerlink" title="a"></a>a</h2><p>可以获取APK级别的一些整体信息，主要是解析了<code>androidmanifest.xml</code>。另外还有签名、完整性检验等工作。这个数据抽象没有涉及到对代码的分析，因此速度是非常快的。<br>如果说我们轻量级地分析apk的描述性信息的话，那么可以用下面的方法则速度非常快。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> androguard.misc <span class="keyword">import</span> APK</span><br><span class="line">a = APK(<span class="string">"xxx.apk"</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="d"><a href="#d" class="headerlink" title="d"></a>d</h2><p><code>d</code>是list，这个list中的每个元素是<strong><code>DalvikVMFormat</code></strong>对象，每个<code>DalvikVMFormat</code>*象和apk中的<code>.dex</code>文件具有一一对应关系。<br>dex文件对象是一个<code>androguard.core.bytecodes.dvm.DalvikVMFormat</code>类，This class can parse a classes.dex file of an Android application (APK).<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> d:</span><br><span class="line">    <span class="keyword">for</span> method <span class="keyword">in</span> dd.get_methods():</span><br></pre></td></tr></table></figure></p>
+<p>这个对象其实提供了一些反编译的工作，是非常重要的部分，但是它没有对上提供很多分析接口，所以说接触得相对较少。d主要是提供了一些简单的索引的函数，提供的常用的函数：</p>
+<ol>
+<li><p>找出所有的class。<br><code>dd.get_classes()</code><br>这里每个class是封装成了一个<code>androguard.core.bytecodes.dvm.ClassDefItem</code>类型的对象。我们可以调用该对象的函数去分析每个class.<br>比如说</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">clas.get_name()	<span class="comment">#获取类名</span></span><br><span class="line">clas.get_source()	<span class="comment">#得到解码出来的java代码</span></span><br><span class="line">clas.get_methods()	<span class="comment">#获取类里面所有的函数。其实dd.get_methods()就是对每个class调用这个方法得到整个dex的method</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找出所有的method<br><code>dd.get_methods()</code><br>这里每个method封装成了一个<code>androguard.core.bytecodes.dvm.EncodedMethod</code>类型的对象。后续可以分析每个method。<br>常用函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">method.get_name() <span class="comment"># 获取函数名</span></span><br><span class="line">method.get_class_name()	<span class="comment">#获取类名</span></span><br><span class="line">method.get_descriptor()	<span class="comment">#获取参数</span></span><br><span class="line">method.get_source()	<span class="comment">#得到解码出来的java代码</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="dx"><a href="#dx" class="headerlink" title="dx"></a>dx</h2><p>dx是一个<code>androguard.core.analysis.analysis.Analysis</code>类型的对象。构造函数的输出是d，即所有的dex文件。这里注意下如果apk中包含多个.dex文件的话，那么d是list，每个元素对应一个dex，但是整个apk只对应一个dx。<br>分析对象的一个主要功能是提供了XREFs 交叉引用分析。既有class级别的交叉引用，也有method级别的交叉引用，设置连字段的交叉分析也有。不过最常用的是调用函数图。</p>
+<p><strong><code>Analysis</code></strong>对象内部的数据结构。可以看到，用了字典来组织apk中所有的class和mthod<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Contains DalvikVMFormat objects</span></span><br><span class="line">self.vms = []</span><br><span class="line"><span class="comment"># A dict of &#123;classname: ClassAnalysis&#125;, populated on add(vm)</span></span><br><span class="line">self.classes = &#123;&#125;</span><br><span class="line"><span class="comment"># A dict of &#123;string: StringAnalysis&#125;, populated on create_xref()</span></span><br><span class="line">self.strings = &#123;&#125;</span><br><span class="line"><span class="comment"># A dict of &#123;EncodedMethod: MethodAnalysis&#125;, populated on add(vm)</span></span><br><span class="line">self.methods = &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在<code>Analysis</code>对象的层面，又对class和method做了进一步的封装，提供了在整个apk范围内它们之间的交叉引用关系。</p>
+<p><strong>对应于class的抽象数据结构是<code>ClassAnalysis</code></strong><br>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">self.external = isinstance(classobj, ExternalClass)</span><br><span class="line">self.orig_class = classobj</span><br><span class="line">self._inherits_methods = &#123;&#125;</span><br><span class="line">self._methods = &#123;&#125;</span><br><span class="line">self._fields = &#123;&#125;</span><br><span class="line"></span><br><span class="line">self.xrefto = collections.defaultdict(set)	<span class="comment"># A-&gt;B 假设A是self</span></span><br><span class="line">self.xreffrom = collections.defaultdict(set)	<span class="comment">#B-&gt;A</span></span><br></pre></td></tr></table></figure></p>
+<p>   很关键的一点是用了两个字典来存储了引用关系。</p>
+<p><strong>对应于method的抽象数据结构有 <code>MethodClassAnalysis</code>和<code>MethodAnalysis</code></strong></p>
+<pre><code>2.1. `MethodClassAnalysis`
+</code></pre><p>   下面得到的是<code>MethodClassAnalysis</code><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">methodanalysis = dx.get_methods()</span><br><span class="line">dx.get_method_analysis(method:EncodedMethod)</span><br></pre></td></tr></table></figure></p>
+<p>   交叉引用分析都是以这个数据结构为基础的。<br>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.method = method</span><br><span class="line">self.xrefto = set()		<span class="comment">#记录本函数调用的其他函数</span></span><br><span class="line">self.xreffrom = set()	<span class="comment">#记录调用了本函数的其他数</span></span><br></pre></td></tr></table></figure></p>
+<p>   在method里面也是用了两个字典来表示引用关系。</p>
+<p>   <strong>call graph</strong>是函数级别的xref图<br>   <code>g = dx.get_call_graph()</code>    返回networkx的DiGraph对象。<br>   每个节点代表了一个method，节点的属性包括：<br>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Each node will contain the following meta information <span class="keyword">as</span> attribute:</span><br><span class="line">* external: <span class="keyword">is</span> the method external <span class="keyword">or</span> <span class="keyword">not</span> (boolean)</span><br><span class="line">* entrypoint: <span class="keyword">is</span> the method a known entry point (boolean)</span><br><span class="line">* native: <span class="keyword">is</span> the method a native method by signature (boolean)</span><br><span class="line">* public: <span class="keyword">is</span> the method declared public (boolean)</span><br><span class="line">* static: <span class="keyword">is</span> the method declared static (boolean)</span><br><span class="line">* vm: An ID of the DEX file where this method <span class="keyword">is</span> declared <span class="keyword">or</span> <span class="number">0</span> <span class="keyword">if</span> external (signed int)</span><br><span class="line">* codesize: size of code of the method <span class="keyword">or</span> zero <span class="keyword">if</span> external (int)</span><br></pre></td></tr></table></figure></p>
+<p>   边的方向表示的调用关系，注意边有offset属性，表示了调用这个事件在caller代码中的位置，因此如果method A中调用了两次method B，那么在调用图中A到B的边有两条。</p>
+<p>   2.2. <code>MethodAnalysis</code><br>   下面这个函数得到的是<code>MethodAnalysis</code><br>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">method = dx.get_method(m: EncodedMethod)</span><br></pre></td></tr></table></figure></p>
+<p>   （get_methods()得到的是<code>MethodClassAnalysis</code>序列，函数接口够乱的）</p>
+<p>   <em>问题：为什么要给method用两种不同的抽象数据结构来封装?</em><br>   <code>MethodClassAnalysis</code>用于支持交叉引用分析（比如上面说的函数调用关系图）。而<code>MethodAnalysis</code>可以得到代码块，代码块的话一般来说是用在控制流图分析，因此这个数据抽象应该是用于支持控制流图分析，但是就目前版本来看，androguard并没有直接提供控制流图分析</p>
+<p>在method的层级之下，还有<strong>代码块的数据抽象<code>DVMBasicBlock</code></strong>. 代码块在分析控制流图（control flow graph, CFG）的时候会有用到<br>   <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> BasicBlock <span class="keyword">in</span> method.get_basic_blocks().get(): <span class="comment"># type(method) = `MethodAnalysis`</span></span><br><span class="line">    代码块的分析</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Android-Security/" rel="tag"># Android Security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/30/CPP语法备忘录/" rel="next" title="C++语法备忘录">
+                <i class="fa fa-chevron-left"></i> C++语法备忘录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Liangxun Li</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#a"><span class="nav-number">1.</span> <span class="nav-text">a</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#d"><span class="nav-number">2.</span> <span class="nav-text">d</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dx"><span class="nav-number">3.</span> <span class="nav-text">dx</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liangxun Li</span>
+
+  
+</div>
+
+
+  <div class="powered-by">
+  <i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+    本站访客数:<span id="busuanzi_value_site_uv"></span>
+  </span>
+  </div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+<div class="theme-info">
+  <div class="powered-by"></div>
+  <span class="post-count">博客全站共14.2k字</span>
+</div>
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
