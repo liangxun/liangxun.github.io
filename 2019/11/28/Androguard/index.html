@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+<meta name="description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;">
 <meta name="keywords" content="Android Security">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Androguard">
 <meta property="og:url" content="https://liangxun.github.io/2019/11/28/Androguard/index.html">
 <meta property="og:site_name" content="liangxun blog">
-<meta property="og:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+<meta property="og:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-11-28T09:04:52.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Androguard">
-<meta name="twitter:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;&quot;">
+<meta name="twitter:description" content="Github, Doc参考：详解Androguard静态分析APK方法基本用法：12345678from androguard.misc import AnalyzeAPKa, d, dx = AnalyzeAPK(&quot;xxx.apk&quot;)&quot;&quot;&quot;line2等价于a = APK(&quot;xxx.apk&quot;)d = DalvikVMFormate(a.get_dex())dx = VMAnalysis(d)&quot;&quot;">
 
 
 
@@ -348,7 +348,7 @@
       
 
       
-        <p><a href="https://github.com/androguard/androguard" target="_blank" rel="noopener">Github</a>, <a href="https://androguard.readthedocs.io/" target="_blank" rel="noopener">Doc</a><br>参考：<a href="https://blog.csdn.net/ybdesire/article/details/52629142" target="_blank" rel="noopener">详解Androguard静态分析APK方法</a><br>基本用法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> androguard.misc <span class="keyword">import</span> AnalyzeAPK</span><br><span class="line">a, d, dx = AnalyzeAPK(<span class="string">"xxx.apk"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""line2等价于</span></span><br><span class="line"><span class="string">a = APK("xxx.apk")</span></span><br><span class="line"><span class="string">d = DalvikVMFormate(a.get_dex())</span></span><br><span class="line"><span class="string">dx = VMAnalysis(d)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure></p>
+        <script src="/assets/js/APlayer.min.js"> </script><p><a href="https://github.com/androguard/androguard" target="_blank" rel="noopener">Github</a>, <a href="https://androguard.readthedocs.io/" target="_blank" rel="noopener">Doc</a><br>参考：<a href="https://blog.csdn.net/ybdesire/article/details/52629142" target="_blank" rel="noopener">详解Androguard静态分析APK方法</a><br>基本用法：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> androguard.misc <span class="keyword">import</span> AnalyzeAPK</span><br><span class="line">a, d, dx = AnalyzeAPK(<span class="string">"xxx.apk"</span>)</span><br><span class="line"></span><br><span class="line"><span class="string">"""line2等价于</span></span><br><span class="line"><span class="string">a = APK("xxx.apk")</span></span><br><span class="line"><span class="string">d = DalvikVMFormate(a.get_dex())</span></span><br><span class="line"><span class="string">dx = VMAnalysis(d)</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure></p>
 <p><code>a</code>是apk文件对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/bytecodes/apk.py" target="_blank" rel="noopener">定义源码</a>.  通过apk文件对象，可以获取APK级别的一些整体信息，比如<code>androidmanifest.xml</code>中的申明，文件个数，签名信息等等<br><code>d</code>是dex文件对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/bytecodes/dvm.py" target="_blank" rel="noopener">定义源码</a>。（注意下，在新版本中<code>d</code>是list，这个list中的每个元素是dex文件对<br><code>dx</code>的dex的分析结果对象，<a href="https://github.com/androguard/androguard/blob/www/androguard/core/analysis/analysis.py" target="_blank" rel="noopener">定义源码</a></p>
 <h2 id="a"><a href="#a" class="headerlink" title="a"></a>a</h2><p>可以获取APK级别的一些整体信息，主要是解析了<code>androidmanifest.xml</code>。另外还有签名、完整性检验等工作。这个数据抽象没有涉及到对代码的分析，因此速度是非常快的。<br>如果说我们轻量级地分析apk的描述性信息的话，那么可以用下面的方法则速度非常快。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> androguard.misc <span class="keyword">import</span> APK</span><br><span class="line">a = APK(<span class="string">"xxx.apk"</span>)</span><br></pre></td></tr></table></figure></p>
 <h2 id="d"><a href="#d" class="headerlink" title="d"></a>d</h2><p><code>d</code>是list，这个list中的每个元素是<strong><code>DalvikVMFormat</code></strong>对象，每个<code>DalvikVMFormat</code>*象和apk中的<code>.dex</code>文件具有一一对应关系。<br>dex文件对象是一个<code>androguard.core.bytecodes.dvm.DalvikVMFormat</code>类，This class can parse a classes.dex file of an Android application (APK).<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> dd <span class="keyword">in</span> d:</span><br><span class="line">    <span class="keyword">for</span> method <span class="keyword">in</span> dd.get_methods():</span><br></pre></td></tr></table></figure></p>
@@ -416,6 +416,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2020/01/02/player/" rel="prev" title="player">
+                player <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -492,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -559,7 +563,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

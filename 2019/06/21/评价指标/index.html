@@ -86,19 +86,19 @@
 
 
 
-<meta name="description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(Tr">
+<meta name="description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(T">
 <meta name="keywords" content="Machine Learning">
 <meta property="og:type" content="article">
 <meta property="og:title" content="评价指标">
 <meta property="og:url" content="https://liangxun.github.io/2019/06/21/评价指标/index.html">
 <meta property="og:site_name" content="liangxun blog">
-<meta property="og:description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(Tr">
+<meta property="og:description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(T">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://liangxun.github.io/2019/06/21/评价指标/confusion_matrix.svg">
 <meta property="og:updated_time" content="2019-10-21T07:29:02.750Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="评价指标">
-<meta name="twitter:description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(Tr">
+<meta name="twitter:description" content="不同任务的评价指标不一样，每个指标都有其适用的场景。 分类任务二分类混淆矩阵(confusion matrix)是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，行代表真实情况，列表示预测情况。P表示Positive(正例)，N表示Negtive(负例)；以TP为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(T">
 <meta name="twitter:image" content="https://liangxun.github.io/2019/06/21/评价指标/confusion_matrix.svg">
 
 
@@ -350,7 +350,7 @@
       
 
       
-        <p>不同任务的评价指标不一样，每个指标都有其适用的场景。</p>
+        <script src="/assets/js/APlayer.min.js"> </script><p>不同任务的评价指标不一样，每个指标都有其适用的场景。</p>
 <h2 id="分类任务"><a href="#分类任务" class="headerlink" title="分类任务"></a>分类任务</h2><h3 id="二分类"><a href="#二分类" class="headerlink" title="二分类"></a>二分类</h3><p><strong>混淆矩阵(confusion matrix)</strong>是最基本的预测结果展示，其他指标都是定义在混淆矩阵上。下图是二分类的混淆矩阵，<strong>行代表真实情况，列表示预测情况</strong>。P表示Positive(正例)，N表示Negtive(负例)；以<strong>TP</strong>为例，其中第二个字母表示预测情况(Positive/Negtive)，第一个字母表示我们对预测结果的评价(True)/False).<br><img src="/2019/06/21/评价指标/confusion_matrix.svg" alt="混淆矩阵">  </p>
 <p>基于混淆矩阵定义的指标有两个阵营：</p>
 <p>第一个阵营的评价指标是偏向于关注positive类, 包括Precision, Recall以及F1.<br><strong>精确率(Precision)</strong>：$P=\frac{TP}{TP+FP}$ . 表示在所有<em>预测为</em>P的样本中，有多少<em>真的是</em>P<br><strong>召回率(Recall)</strong>: $R=\frac{TP}{TP+FN}$ . 表示真正为P的样本中，有多少被检测出来<br>（在恶意检测场景下，通常我们把恶意样本称为正例，把正常样本称为负例）<br><strong>F1-Score</strong>: $F1 = \frac{2 \times P \times R}{P + R}$. F1值定义为召回率和精确率调和平均的2倍（之所以2倍是为了让F1的值域为$[0-1]$）。F1为什么使用调和平均而不是算术平均？调和平均强调了较小值得重要性，比如当召回率接近0，精确率接近1，这其实是很 糟糕的情况，算术平均是0.5， 而调和平均接近0。</p>
@@ -493,7 +493,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -560,7 +560,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

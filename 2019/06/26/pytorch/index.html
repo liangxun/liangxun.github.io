@@ -348,7 +348,7 @@
       
 
       
-        <h1 id="pytorch"><a href="#pytorch" class="headerlink" title="pytorch"></a>pytorch</h1><h2 id="Tensor什么时候共享内存？"><a href="#Tensor什么时候共享内存？" class="headerlink" title="Tensor什么时候共享内存？"></a>Tensor什么时候共享内存？</h2><p><a href="https://cloud.tencent.com/developer/article/1442507" target="_blank" rel="noopener">万字综述，核心开发者全面解读PyTorch内部机制</a>  </p>
+        <script src="/assets/js/APlayer.min.js"> </script><h1 id="pytorch"><a href="#pytorch" class="headerlink" title="pytorch"></a>pytorch</h1><h2 id="Tensor什么时候共享内存？"><a href="#Tensor什么时候共享内存？" class="headerlink" title="Tensor什么时候共享内存？"></a>Tensor什么时候共享内存？</h2><p><a href="https://cloud.tencent.com/developer/article/1442507" target="_blank" rel="noopener">万字综述，核心开发者全面解读PyTorch内部机制</a>  </p>
 <p><strong>进入Tensor的世界</strong>。从list或者 numpy array 构造Tensor的时候默认会是从新开辟内存的。<br>    <code>b = torch.Tensor(a)</code>  那么a和b是分开存储的；<code>a</code>是<code>numpy.array</code>类型<br>    <code>c = torch.from_numpy(a)</code> 这种方式a和c是共享内存的；</p>
 <p><strong>在Tensor的世界中</strong><br>为了节省内存，tensor会尽可能地共享存储，用引用的方式，python语法本身也是这样的。但是记住共享内存的必要条件是两个变量存储的总各个要是相同的，或者切片。<br>共享底层存储的情况：</p>
 <ol>
@@ -493,7 +493,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -560,7 +560,7 @@
     <footer id="footer" class="footer">
       <div class="footer-inner">
         <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
