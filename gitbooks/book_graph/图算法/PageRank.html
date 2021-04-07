@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="../工程实践/" />
+    <link rel="next" href="../DeploySystem/" />
     
     
     <link rel="prev" href="./" />
@@ -102,9 +102,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../Introduction.md">
+        <li class="chapter " data-level="1.2" data-path="../Basics/">
             
-                <span>
+                <a href="../Basics/">
             
                     
                     第一章 图
@@ -112,6 +112,25 @@
                 </a>
             
 
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../Basics/节点的结构角色.html">
+            
+                <a href="../Basics/节点的结构角色.html">
+            
+                    
+                    1.1节点的结构角色
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
             
         </li>
     
@@ -147,9 +166,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="../工程实践/">
+        <li class="chapter " data-level="1.4" data-path="../DeploySystem/">
             
-                <a href="../工程实践/">
+                <a href="../DeploySystem/">
             
                     
                     第三章 工程实践
@@ -161,9 +180,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="1.4.1" data-path="../chapter3/存储.md">
+        <li class="chapter " data-level="1.4.1" data-path="../DeploySystem/存储.html">
             
-                <span>
+                <a href="../DeploySystem/存储.html">
             
                     
                     3.1 图存储
@@ -174,9 +193,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4.2" data-path="../chapter3/计算.md">
+        <li class="chapter " data-level="1.4.2" data-path="../DeploySystem/计算.html">
             
-                <span>
+                <a href="../DeploySystem/计算.html">
             
                     
                     3.2 图计算引擎
@@ -205,9 +224,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="../GNN/">
+        <li class="chapter " data-level="1.6" data-path="../GraphNeuralNetworks/">
             
-                <a href="../GNN/">
+                <a href="../GraphNeuralNetworks/">
             
                     
                     第五章 图神经网络
@@ -263,7 +282,64 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="21-pagerank">2.1 PageRank</h1>
+                                <h1 id="pagerank">PageRank</h1>
+<p>pagerank&#x7684;&#x57FA;&#x672C;&#x601D;&#x60F3;&#x662F;&#x6BCF;&#x4E2A;&#x8282;&#x70B9;&#x7684;&#x5F71;&#x54CD;&#x529B;&#x662F;&#x53C8;&#x4ED6;&#x7684;&#x90BB;&#x5C45;&#x51B3;&#x5B9A;&#x7684;</p>
+<p>&#x5728;&#x793E;&#x4EA4;&#x7F51;&#x7EDC;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x4E00;&#x4E2A;&#x4EBA;&#x8BA4;&#x8BC6;&#x7684;&#x4EBA;&#x7684;&#x91CD;&#x8981;&#x6027;&#x6765;&#x786E;&#x5B9A;&#x4ED6;&#x7684;&#x91CD;&#x8981;&#x6027;</p>
+<p>&#x5B9A;&#x4E49;&#x4E86;&#x7ED3;&#x70B9;&#x7684;pagerank&#x503C;
+<script type="math/tex; mode=display">
+R(u) = c \sum_{v \in B_u} \frac{R(v)}{N_v}
+</script>
+&#x5176;&#x4E2D;$v \in B_u$&#x8868;&#x793A;&#x6709;&#x4E00;&#x6761;&#x8FB9;&#x7531;&#x8282;&#x70B9;$v$&#x6307;&#x5411;$u$. &#x5373;$v \rightarrow u$. &#x6CE8;&#x610F;&#x8FD9;&#x91CC;&#x9664;&#x4EE5;&#x4E86;$N_v$&#xFF0C;&#x5176;&#x5B9E;&#x5C31;&#x662F;</p>
+<p>pagerank&#x539F;&#x8BBA;&#x6587;&#x4E2D;&#x7684;&#x56FE;&#x4ECB;&#x7ECD;&#x5730;&#x975E;&#x5E38;&#x6E05;&#x695A;</p>
+<p><img src="../../../BUPT/Notes/resource/pagerank.jpg" alt="pagerank" style="zoom:33%;"></p>
+<p>&#x53EF;&#x4EE5;&#x4ECE;&#x968F;&#x673A;&#x6E38;&#x8D70;&#x7684;&#x89D2;&#x5EA6;&#x6765;&#x89E3;&#x91CA;pagerank&#x3002;&#x6709;&#x4E00;&#x5B9A;&#x7684;&#x6982;&#x7387;&#x968F;&#x673A;&#x8DF3;&#x8F6C;</p>
+<p>pagerank&#x7684;&#x7406;&#x8BBA;&#x57FA;&#x7840;&#xFF1A;&#x4E0D;&#x53EF;&#x7EA6;&#x4E14;&#x975E;&#x5468;&#x671F;&#x7684;&#x6709;&#x9650;&#x72B6;&#x6001;&#x9A6C;&#x5C14;&#x53EF;&#x592B;&#x94FE;&#xFF0C;&#x6709;&#x552F;&#x4E00;&#x5E73;&#x7A33;&#x5206;&#x5E03;&#x5B58;&#x5728;</p>
+<h4 id="&#x6539;&#x8FDB;&#x7684;pagerank">&#x6539;&#x8FDB;&#x7684;pagerank</h4>
+<p>&#x300A;&#x7EDF;&#x8BA1;&#x5B66;&#x4E60;&#x65B9;&#x6CD5;2&#x300B;&#x4E2D;&#x628A;&#x8FD9;&#x4E2A;&#x89E3;&#x91CA;&#x6210;&#x671D;&#x539F;&#x6765;&#x7684;&#x6A21;&#x578B;&#x4E2D;&#x589E;&#x52A0;&#x5E73;&#x6ED1;&#x9879;&#xFF0C;&#x90A3;&#x79CD;&#x89E3;&#x91CA;&#x6BD4;&#x8F83;&#x597D;&#x7406;&#x89E3;&#x3002;</p>
+<p>&#x5B9E;&#x9645;&#x4E0A;&#x4F7F;&#x7528;&#x7684;pagerank&#x662F;&#x6539;&#x8FDB;&#x578B;&#xFF1A;
+<script type="math/tex; mode=display">
+R'(u) = c \sum_{v \in B_u} \frac{R'(v)}{N_v} + cE(u)
+</script></p>
+<p>&#x5728;&#x52A0;&#x5165;&#x5E73;&#x6ED1;&#x9879;&#x4E4B;&#x540E;&#xFF0C;&#x80FD;&#x591F;&#x4FDD;&#x8BC1;&#x7EC4;&#x5408;&#x8F6C;&#x79FB;&#x77E9;&#x9635;&#x662F;&#x975E;&#x5468;&#x671F;</p>
+<p>&#x6700;&#x5F00;&#x59CB;&#x7684;pagerank&#x503C;&#x53EF;&#x4EE5;&#x8BBE;&#x7F6E;&#x6210;&#x4E00;&#x6837;&#x7684;&#xFF0C;&#x901A;&#x8FC7;&#x8BAD;&#x7EC3;&#x4F1A;&#x6536;&#x655B;&#x5230;&#x5E73;&#x8861;&#x72B6;&#x6001;</p>
+<p>&#x5728;<a href="https://docs.dgl.ai/tutorials/basics/3_pagerank.html" target="_blank">dgl&#x7684;pagerank</a>&#x5B9E;&#x73B0;&#x4E2D;&#x516C;&#x5F0F;&#x662F;:
+<script type="math/tex; mode=display">
+PR(u) = \frac{1-d}{N} + d \times \sum_{v \in N(u)} \frac{PR(v)}{D(v)}  
+</script>
+$d$&#x901A;&#x5E38;&#x8BBE;&#x7F6E;&#x4E3A;&#x56FA;&#x5B9A;&#x503C;0.85&#xFF0C;$N$&#x662F;&#x56FE;&#x4E2D;&#x7ED3;&#x70B9;&#x7684;&#x6570;&#x76EE;&#xFF0C;&#x901A;&#x5E38;&#x6BCF;&#x4E2A;&#x7ED3;&#x70B9;&#x7684;PR&#x503C;&#x521D;&#x59CB;&#x5316;&#x4E3A;$\frac{1}{N}$</p>
+<p>&#x53C2;&#x8003;&#xFF1A;</p>
+<p><a href="http://blog.codinglabs.org/articles/intro-to-pagerank.html" target="_blank">http://blog.codinglabs.org/articles/intro-to-pagerank.html</a></p>
+<p><a href="http://chennanxu.github.io/2017/03/19/&#x6DF1;&#x5165;&#x7406;&#x89E3;PageRank/" target="_blank">http://chennanxu.github.io/2017/03/19/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3PageRank/</a></p>
+<p><strong>&#x95EE;&#x9898;&#xFF1A;&#x5982;&#x4F55;&#x4ECE;&#x77E9;&#x9635;&#x7684;&#x89D2;&#x5EA6;&#x89E3;&#x91CA;&#x548C;&#x7406;&#x89E3;pagerank&#xFF1F;</strong></p>
+<p>&#x7B80;&#x5355;&#x6765;&#x8BF4;&#x5C31;&#x662F;&#x8F6C;&#x79FB;&#x77E9;&#x9635;&#x4E58;&#x72B6;&#x6001;&#x5411;&#x91CF;</p>
+<p><script type="math/tex; mode=display">
+R_{t+1} = M R_t
+</script>
+&#x5176;&#x4E2D;M&#x662F;&#x8F6C;&#x79FB;&#x6982;&#x7387;&#x77E9;&#x9635;&#xFF0C;&#x4E0D;&#x8981;&#x5F53;&#x6210;&#x90BB;&#x5C45;&#x77E9;&#x9635;&#xFF0C;&#x8F6C;&#x79FB;&#x6982;&#x7387;&#x77E9;&#x9635;&#x5C31;&#x662F;&#x90BB;&#x63A5;&#x77E9;&#x9635;&#x9664;&#x4EE5;&#x8282;&#x70B9;&#x7684;&#x5EA6;&#x505A;&#x5F52;&#x4E00;&#x5316;&#x5904;&#x7406;</p>
+<p>&#x6539;&#x8FDB;&#x7684;&#x5B9A;&#x4E49;&#x7528;&#x77E9;&#x9635;&#x8868;&#x793A;&#x5219;&#x662F;
+<script type="math/tex; mode=display">
+R_{t+1} = dMR_t + \frac{1-d}{n}
+</script></p>
+<p><strong>&#x95EE;&#x9898;&#xFF1A;&#x5177;&#x4F53;&#x7684;&#x89E3;&#x6CD5;</strong></p>
+<ol>
+<li><p>&#x6839;&#x636E;&#x5B9A;&#x4E49;&#x8FED;&#x4EE3;&#x8BA1;&#x7B97;&#xFF0C;&#x5927;&#x591A;&#x6570;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x4E1C;&#x897F;&#x3002;&#x6CE8;&#x610F;&#x8FD9;&#x91CC;&#x6BCF;&#x6B21;&#x4E58;&#x7684;&#x662F;&#x771F;&#x5B9E;&#x7684;&#x6982;&#x7387;&#x8F6C;&#x79FB;&#x77E9;&#x9635;$M$</p>
+</li>
+<li><p>&#x5E42;&#x6CD5;&#x3002;&#x5E42;&#x6CD5;&#x672C;&#x8EAB;&#x662F;&#x7528;&#x4E8E;&#x8FD1;&#x4F3C;&#x8BA1;&#x7B97;&#x77E9;&#x9635;&#x7684;&#x4E3B;&#x7279;&#x5F81;&#x503C;&#x548C;&#x4E3B;&#x7279;&#x5F81;&#x5411;&#x91CF;&#x3002;&#x800C;&#x8FD9;&#x91CC;&#x5B58;&#x5728;</p>
+<p>&#x6709;&#x4E00;&#x4E2A;&#x5B9A;&#x7406;&#xFF1A;&#x8F6C;&#x79FB;&#x77E9;&#x9635;A&#x5BF9;&#x5E94;&#x7684;pagerank&#x5411;&#x91CF;&#x5176;&#x5B9E;&#x5C31;&#x662F;&#x77E9;&#x9635;$A$&#x7684;&#x4E3B;&#x7279;&#x5F81;&#x5411;&#x91CF;&#xFF0C;&#x4E3B;&#x7279;&#x5F81;&#x503C;&#x662F;1</p>
+<p>$A=dM+\frac{1-d}{n}E$</p>
+<p>&#x6240;&#x4EE5;&#x8BF4;&#x53EF;&#x4EE5;&#x7528;&#x5E42;&#x6CD5;&#x7B97;$A$&#x7684;&#x4E3B;&#x7279;&#x5F81;&#x5411;&#x91CF;&#xFF0C;&#x7136;&#x540E;&#x628A;&#x8FD9;&#x4E2A;&#x4E3B;&#x7279;&#x5F81;&#x5411;&#x91CF;&#x5F52;&#x4E00;&#x5316;&#x6210;&#x6982;&#x7387;&#x5206;&#x5E03;&#x5C31;&#x6210;pagerank&#x5411;&#x91CF;</p>
+</li>
+</ol>
+<p>&#x5176;&#x5B9E;&#x672C;&#x8D28;&#x90FD;&#x662F;&#x8FED;&#x4EE3;&#x5730;&#x8FD0;&#x884C; &#x5411;&#x91CF;=&#x77E9;&#x9635;*&#x5411;&#x91CF;</p>
+<blockquote>
+<p>&#x95EE;&#x9898;&#xFF1A;&#x4E3A;&#x4EC0;&#x4E48;&#x4E3B;&#x7279;&#x5F81;&#x503C;&#x662F;1&#xFF1F;</p>
+<p>&#x9A6C;&#x5C14;&#x53EF;&#x592B;&#x8F6C;&#x79FB;&#x77E9;&#x9635;&#x6700;&#x5927;&#x7279;&#x5F81;&#x503C;&#x7B49;&#x4E8E;1&#xFF0C; &#x8FD9;&#x91CC;&#x8F6C;&#x79FB;&#x77E9;&#x9635;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x9A6C;&#x513F;&#x53EF;&#x592B;&#x8F6C;&#x79FB;&#x77E9;&#x9635;&#xFF0C;&#x5B83;&#x7684;&#x4E3B;&#x7279;&#x5F81;&#x503C;</p>
+<p>&#x5F88;&#x5BB9;&#x6613;&#x8BC1;&#x660E;&#x7684;&#xFF0C;&#x968F;&#x673A;&#x77E9;&#x9635;&#x80AF;&#x5B9A;&#x6709;&#x7279;&#x5F81;&#x503C;1<a href="https://bitjoy.net/2016/08/23/the-eigenvalue-of-stochastic-matrix/" target="_blank">&#x968F;&#x673A;&#x77E9;&#x9635;&#x53CA;&#x5176;&#x7279;&#x5F81;&#x503C;</a></p>
+</blockquote>
+<p>$M$&#x548C;$A$&#x884C;&#x7684;&#x548C;&#x662F;1&#xFF0C;&#x6240;&#x4EE5;&#x4ED6;&#x4EEC;&#x90FD;&#x662F;&#x968F;&#x673A;&#x77E9;&#x9635;</p>
+<blockquote>
+<p>&#x95EE;&#x9898;&#xFF1A;&#x65E2;&#x7136;$A \vec1 = 1 \vec 1$&#x6210;&#x7ACB;, &#x90A3;&#x5C82;&#x4E0D;&#x662F;&#x4E3B;&#x7279;&#x5F81;&#x5411;&#x91CF;&#x5C31;&#x662F;$\vec 1$&#xFF1F;</p>
+</blockquote>
 
                                 
                                 </section>
@@ -296,7 +372,7 @@
                 </a>
                 
                 
-                <a href="../工程实践/" class="navigation navigation-next " aria-label="Next page: 第三章 工程实践">
+                <a href="../DeploySystem/" class="navigation navigation-next " aria-label="Next page: 第三章 工程实践">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -307,7 +383,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"2.1 PageRank","level":"1.3.1","depth":2,"next":{"title":"第三章 工程实践","level":"1.4","depth":1,"path":"工程实践/README.md","ref":"工程实践/README.md","articles":[{"title":"3.1 图存储","level":"1.4.1","depth":2,"path":"chapter3/存储.md","ref":"chapter3/存储.md","articles":[]},{"title":"3.2 图计算引擎","level":"1.4.2","depth":2,"path":"chapter3/计算.md","ref":"chapter3/计算.md","articles":[]}]},"previous":{"title":"第二章 常见图算法","level":"1.3","depth":1,"path":"图算法/README.md","ref":"图算法/README.md","articles":[{"title":"2.1 PageRank","level":"1.3.1","depth":2,"path":"图算法/PageRank.md","ref":"图算法/PageRank.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"图算法/PageRank.md","mtime":"2021-03-29T09:34:30.006Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-03-29T09:53:44.902Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"2.1 PageRank","level":"1.3.1","depth":2,"next":{"title":"第三章 工程实践","level":"1.4","depth":1,"path":"DeploySystem/README.md","ref":"DeploySystem/README.md","articles":[{"title":"3.1 图存储","level":"1.4.1","depth":2,"path":"DeploySystem/存储.md","ref":"DeploySystem/存储.md","articles":[]},{"title":"3.2 图计算引擎","level":"1.4.2","depth":2,"path":"DeploySystem/计算.md","ref":"DeploySystem/计算.md","articles":[]}]},"previous":{"title":"第二章 常见图算法","level":"1.3","depth":1,"path":"图算法/README.md","ref":"图算法/README.md","articles":[{"title":"2.1 PageRank","level":"1.3.1","depth":2,"path":"图算法/PageRank.md","ref":"图算法/PageRank.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["mathjax"],"pluginsConfig":{"mathjax":{"forceSVG":false,"version":"2.6-latest"},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"图算法/PageRank.md","mtime":"2021-03-30T10:02:02.228Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2021-04-07T09:42:45.701Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
